@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-PortfolioApplication<Choisuin>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.portfolio.PortfolioApplication",
+            "projectName": "Choisuin",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

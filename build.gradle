@@ -1,0 +1,64 @@
+plugins {
+    // Spring Boot 플러그인
+    id 'java'
+    id 'org.springframework.boot' version '3.2.0'
+    id 'io.spring.dependency-management' version '1.1.4'
+}
+
+// 프로젝트 정보
+group = 'com.portfolio'
+version = '1.0.0'
+
+// Java 버전 설정 (17 이상 필요함 그래들은 최신이라)
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+
+// 의존성을 다운로드할 저장소
+repositories {
+    mavenCentral()
+}
+
+// 프로젝트에 필요한 라이브러리들!
+dependencies {
+    // Spring Boot Web: 웹 애플리케이션 구축
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    
+    // Spring Boot JPA: 데이터베이스 쉽게 다루기
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    
+    // Thymeleaf: HTML 템플릿 엔진
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    
+    // H2 Database: 개발용 데이터베이스 (간단하게 사용 가능!)
+    runtimeOnly 'com.h2database:h2'
+    
+    // Lombok: 코드 간결하게 만들어주는 라이브러리 (선택사항)
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    
+    // Spring Boot DevTools: 개발 중 자동 재시작
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    
+    // 테스트 라이브러리
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+// 테스트 설정
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+task copyDependencies(type: Copy) {
+    from configurations.runtimeClasspath
+    into 'libs'
+}
+
+// 실행될 메인 클래스 지정
+springBoot {
+    mainClass = 'com.portfolio.PortfolioApplication'
+}
+

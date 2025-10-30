@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
+    <title>최수인의 포트폴리오 📚</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!--헤더(네비게이션 바)-->
+    <header>
+        <nav>
+            <div class="nav">
+                <h1 class="logo">Suin's Portfolio</h1>
+                <ul class="nav-menu">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#portfolio">Portfolio</a></li>
+                    <li><a href="#guestbook">Guestbook</a></li>
+                    <li><a th:href="${session.isAdmin} ? '/admin' : '/login'" class="login-btn">Admin</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!--섹션1: 카드-->
+    <section id="cards" class="cards">
+          <div class="card">
+              <div class="icon">🌱</div>
+              <div class="text">꾸준히 성장하는 중</div>
+          </div>
+          <div class="card">
+              <div class="icon">🐣</div>
+              <div class="text"> 주니어 개발자</div>
+          </div>
+          <div class="card">
+              <div class="icon">💻</div>
+              <div class="text"> 코딩이 좋은 사람</div>
+        </div>
+    </section>
+
+    <!--섹션2: 자기소개-->
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">About me</h2>
+            <div class="about-content">
+                <div class="profile-image">
+                    <img src="/images/profile.jpg" alt="프로필 이미지">
+                </div>
+                <div class="info-box">
+                    <h3>Suin's Profile</h3>
+                    <div class="info-item">
+                        <span class="label">이름</span>
+                        <span class="value">최수인</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">이메일</span>
+                        <span class="value">choisuin16@naver.com</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">기술스택</span>
+                        <span class="value">HTML, CSS, JavaScript, Java, Spring Boot, Oracle, Git, VS code</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">대학교</span>
+                        <span class="value">인제대학교 국제통상(전공), 인제대학교 마케팅전략기획(부전공)</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">자격증</span>
+                        <span class="value">사무자동화산업기사, 컴퓨터활용능력2급, 2종보통운전면허</span>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--섹션3: 포트폴리오-->
+    <section id="portfolio" class="portfolio">
+        <div class="container">
+            <h2 class="section-title">Portfolio</h2>
+            <!--프로젝트 카드가 로드됨-->
+            <div class="portfolio-grid" id="portfolio-grid">
+                <div class="loading-message">프로젝트를 불러오는 중...</div>
+            </div>
+        </div>
+    </section>
+
+    <!--섹션4: 방명록-->
+    <section id="guestbook" class="guestbook">
+        <div class="container">
+            <h2 class="section-title">Guestbook</h2>
+
+            <!--방명록 작성-->
+            <div class="guestbook-form">
+                <h3>방명록을 남겨주세요 💻</h3>
+                <from id="guestbookForm">
+                    <div class="form-group">
+                        <input type="text" id="name" name="name" placeholder="이름을 입력해주세요" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="message" name="message" placeholder="내용을 입력해주세요" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit">등록하기</button>
+                </from>
+            </div>
+           <!--방명록 목록이 로드됨-->
+           <div class="guestbook-list" id="guestbookList">
+               <p class="empty-message">아직 방명록이 없어요. 첫 번째 방명록을 남겨주세요.</p>
+           </div>
+        </div>
+    </section>
+
+    <!--푸터-->
+    <footer>
+        <div class="container">
+            <p>&copy; Suin's Portfolio. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!--JavaScript 파일 연결-->
+    <script src="../js/script.js"></script>
+</body>
+</html>

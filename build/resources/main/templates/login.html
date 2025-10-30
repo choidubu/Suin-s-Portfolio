@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
+    <title>관리자 로그인 🔐</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!--관리자 로그인-->
+    <div class="login">
+        <div class="login-container">
+            <div class="login-box">
+                <div class="login-icon">🔐</div>
+                <h2>관리자 로그인</h2>
+                <p class="login-subtitle">로그인 후 포트폴리오와 방명록을 관리하세요.</p>
+
+                <!--로그인 폼-->
+                 <form action="/admin/login" method="POST" class="login-form">
+                     <div class="form-group">
+                        <label for="username">아이디</label>
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            placeholder="아이디를 입력하세요"
+                            required
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">비밀번호</label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="비밀번호를 입력하세요"
+                            required
+                        >
+                    </div>
+
+                    <button type="submit" class="btn-login">로그인</button>
+                 </form>
+
+                 <!--메인 버튼-->
+                 <a href="/" class="back-link">⬅ 메인으로</a>
+            </div>
+         </div>
+     </div>
+    
+     <script src="/js/script.js"></script>
+
+     <script th:inline="javascript">
+     if ([[${error}]] == true) {
+     alert("🚫 아이디 또는 비밀번호가 올바르지 않습니다. 다시 입력해주세요.");
+     }
+</script>
+
+</body>
+</html>
