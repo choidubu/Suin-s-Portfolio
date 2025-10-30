@@ -10,6 +10,6 @@ RUN ./gradlew build -x test
 
 # 런타임 스테이지
 FROM eclipse-temurin:17-jdk
-WORKDIR /app
+WORKDIR /opt/render/project/src
 COPY --from=build /app/build/libs ./libs
 CMD ["java", "-jar", "libs/your-app.jar"]
