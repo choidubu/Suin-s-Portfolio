@@ -32,4 +32,4 @@ WORKDIR /app
 COPY --from=build /app/build/libs/*.jar .
 
 # 실행
-CMD ["java", "-jar", "Suin-s-Portfolio-1.0.0.jar"]
+CMD ["java", "-jar", "Suin-s-Portfolio-1.0.0-plain.jar"]
