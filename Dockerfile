@@ -19,6 +19,11 @@ RUN ./gradlew build -x test
 
 # 런타임 스테이지
 FROM eclipse-temurin:21-jdk
-WORKDIR /opt/render/project/src
-COPY --from=build /app/build/libs ./libs
-CMD ["java", "-jar", "libs/Suin-s-Portfolio-1.0.0.jar"]
+WORKDIR /app
+
+# 빌드 결과 JAR 복사
+COPY --from=build /app/build/libs/Suin-s-Portfolio-1.0.0.jar .
+
+# 실행
+CMD ["java", "-jar", "Suin-s-Portfolio-1.0.0.jar"]
+
