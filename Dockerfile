@@ -25,8 +25,13 @@ RUN ./gradlew build -x test
 FROM eclipse-temurin:21-jdk
 WORKDIR /app
 
-# JAR 복사 (실제 있는 이름으로)
-COPY --from=build /app/build/libs/*.jar .
+# Jar 이름 통일
+COPY --from=build /app/build/libs/*.jar ./app.jar
+
+# 환경 변수로 DB 연결 정보 전달
+ENV SPRING_DATASOURCE_URL=jdbc:postgresql://dpg-d40sb1s9c44c73cc1ajg-a.singapore-postgres.render.com:5432/portfolio_db_d1aq
+ENV SPRING_DATASOURCE_USERNAME=portfolio_user
+ENV SPRING_DATASOURCE_PASSWORD=DuEtPnvb6uYRB7ginffwDdeWnCgdQIw9
 
 # 실행
-CMD ["java", "-jar", "Suin-s-Portfolio-1.0.0.jar"]
+CMD ["java", "-jar", "app.jar"]
