@@ -19,17 +19,14 @@ COPY src ./src
 RUN chmod +x gradlew
 RUN ./gradlew build -x test
 
-# 디버그용: 빌드 결과 확인
-RUN ls -l /app/build/libs
-
 # --------------------
 # 런타임 스테이지
 # --------------------
 FROM eclipse-temurin:21-jdk
 WORKDIR /app
 
-# 빌드 결과 JAR 복사 (와일드카드 사용)
-COPY --from=build /app/build/libs/*.jar .
+# JAR 복사 (실제 있는 이름으로)
+COPY --from=build /app/build/libs/Suin-s-Portfolio-1.0.0.jar .
 
 # 실행
-CMD ["java", "-jar", "Suin-s-Portfolio-1.0.0-plain.jar"]
+CMD ["java", "-jar", "Suin-s-Portfolio-1.0.0.jar"]
