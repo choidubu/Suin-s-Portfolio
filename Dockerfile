@@ -26,7 +26,7 @@ FROM eclipse-temurin:21-jdk
 WORKDIR /app
 
 # JAR 복사 (실제 있는 이름으로)
-COPY --from=build /app/build/libs/Suin-s-Portfolio-1.0.0.jar .
+COPY --from=build /app/build/libs/*.jar .
 
 # 실행
 CMD ["java", "-jar", "Suin-s-Portfolio-1.0.0.jar"]
