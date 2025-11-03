@@ -63,4 +63,3 @@ public class ProjectService {
         return projectRepository.findByTitleContaining(title);
     }
 }
-

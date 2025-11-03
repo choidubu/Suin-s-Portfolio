@@ -48,3 +48,4 @@ public class GuestbookService {
         return guestbookRepository.findByNameContaining(name);
     }
 }
+

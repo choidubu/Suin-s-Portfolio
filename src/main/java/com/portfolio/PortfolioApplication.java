@@ -10,6 +10,5 @@ public class PortfolioApplication {
     public static void main(String[] args) {
         SpringApplication.run(PortfolioApplication.class, args);
         System.out.println("수인이의 포트폴리오 서버가 시작되었습니다");
-        System.out.println("http://localhost:8080 에서 확인하세요");
     }
 }
