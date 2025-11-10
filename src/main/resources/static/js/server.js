@@ -59,7 +59,7 @@ app.get('/api/projects', async (req, res) => {
   try {
     // tech_stack -> "techStack", created_date -> "createdAt"으로 별칭 지정
     const result = await pool.query(
-      'SELECT id, title, description, github_url, demo_url, tech_stack AS "techStack", thumbnail, created_date AS "createdAt" FROM projects ORDER BY id DESC'
+      'SELECT id, title, description, github_url, demo_url, tech_stack AS "techStack", thumbnail, created_date AS "createdAt" FROM projects ORDER BY id DESC'
     );
     res.json(result.rows);
   } catch (err) {
@@ -150,7 +150,8 @@ app.delete('/api/projects/:id', async (req, res) => {
 // 1. 방명록 목록 (GET /api/guestbooks) - 수정됨: 비밀번호 제외 및 별칭 통일
 app.get('/api/guestbooks', async (req, res) => {
   try {
-    // 비밀번호를 제외하고, created_date를 "created"로 별칭 지정
+    // 🚨 핵심: DB 컬럼 이름을 프론트엔드(index.html, admin.js)가 기대하는 키 이름으로 별칭 지정.
+    // 또한, 암호(password)는 제외합니다.
     const result = await pool.query(
       'SELECT id, author_name, content, created_date AS created FROM guestbooks ORDER BY id DESC'
     );
@@ -160,7 +161,6 @@ app.get('/api/guestbooks', async (req, res) => {
     res.status(500).send('DB 오류 발생');
   }
 });
-
 // 2. 방명록 추가 (POST /api/guestbooks) - 기존 코드
 app.post('/api/guestbooks', async (req, res) => {
     // 1. 라우터 진입 디버깅 로그
