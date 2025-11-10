@@ -147,3 +147,4 @@ async function loadProjectData(projectId) {
         console.error('프로젝트 데이터 불러오기 실패:', error);
         alert('프로젝트 정보를 불러오는데 실패했어요 😢');
     }
+}
