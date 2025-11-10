@@ -16,14 +16,14 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ===== 탭 전환 함수 =====
-// 프로젝트 관리와 방명록 관리 탭을 전환행
+// 프로젝트 관리와 방명록 관리 탭을 전환
 function switchTab(tabName) {
     // 모든 탭 버튼과 섹션 가져옴
     const tabBtns = document.querySelectorAll('.tab-btn');
     const projectsTab = document.getElementById('projects-tab');
     const guestbookTab = document.getElementById('guestbook-tab');
     
-    // 모든 탭 버튼의 active 클래스 제거함ㅋㅋ
+    // 모든 탭 버튼의 active 클래스 제거함
     tabBtns.forEach(btn => btn.classList.remove('active'));
     
     if (tabName === 'projects') {
@@ -65,28 +65,35 @@ async function loadProjectsAdmin() {
 // ===== 프로젝트 목록 표시 (관리자용) =====
 function displayProjectsAdmin(projects) {
     const list = document.getElementById('projectListAdmin');
-    
+
+    // 데이터 없으면 안내문
     if (!projects || projects.length === 0) {
         list.innerHTML = '<p class="loading-text">아직 프로젝트가 없어요. 첫 프로젝트를 추가해보세요! ➕</p>';
         return;
     }
-    
+
+    // 프로젝트 리스트 출력
     list.innerHTML = projects.map(project => {
-        const techTags = project.techStack.split(',').map(tech => 
-            `<span class="tech-tag">${tech.trim()}</span>`
-        ).join('');
-        
+        // techStack이 없을 수도 있으므로 안전하게 처리
+        const techTags = (project.techStack || '').split(',')
+            .map(tech => `<span class="tech-tag">${tech.trim()}</span>`)
+            .join('');
+
+        // 각 필드도 안전하게 확인
+        const title = project.title || '(제목 없음)';
+        const description = project.description || '(설명 없음)';
+
         return `
             <div class="project-item-admin">
-                <h4 class="project-item-header">${project.title}</h4>
-                <p class="project-item-desc">${project.description}</p>
+                <h4 class="project-item-header">${title}</h4>
+                <p class="project-item-desc">${description}</p>
                 <div class="project-item-tech">${techTags}</div>
                 <div class="project-item-actions">
                     <button class="btn btn-edit" onclick="editProject(${project.id})">
-                        ✏️ 수정
+                        수정
                     </button>
                     <button class="btn btn-delete" onclick="deleteProject(${project.id})">
-                        🗑️ 삭제
+                        삭제
                     </button>
                 </div>
             </div>
@@ -101,7 +108,7 @@ function openProjectModal(projectId = null) {
     const form = document.getElementById('projectForm');
     
     if (projectId) {
-        // 수정 모드(이수정아님)
+        // 수정 모드
         modalTitle.textContent = '프로젝트 수정';
         loadProjectData(projectId);
     } else {
@@ -170,11 +177,11 @@ async function saveProject(e) {
             closeProjectModal();
             loadProjectsAdmin();
         } else {
-            alert('프로젝트 저장에 실패했어요ㅠㅠ');
+            alert('프로젝트 저장에 실패했어요.');
         }
     } catch (error) {
         console.error('프로젝트 저장 실패:', error);
-        alert('오류가 발생했어요ㅠㅠ');
+        alert('오류가 발생했어요.');
     }
 }
 
@@ -231,9 +238,9 @@ function displayGuestbooksAdmin(guestbooks) {
     tbody.innerHTML = guestbooks.map((gb, index) => `
         <tr>
             <td>${guestbooks.length - index}</td>
-            <td>${escapeHtml(gb.name)}</td>
-            <td>${escapeHtml(gb.message)}</td>
-            <td>${formatDate(gb.createdAt)}</td>
+            <td>${escapeHtml(gb.author_name)}</td>
+            <td>${escapeHtml(gb.content)}</td>
+            <td>${formatDate(gb.created)}</td>
             <td>
                 <button class="btn btn-delete" onclick="deleteGuestbook(${gb.id})">
                     삭제

@@ -71,7 +71,7 @@ function displayProjects(projects) {
 }
 
 // ===== 방명록 목록 불러오기 =====
-// 백엔드에서 방명록 데이터를 가져와유
+// 백엔드에서 방명록 데이터를 가져옴
 async function loadGuestbooks() {
     try {
         const response = await fetch('/api/guestbooks');
@@ -97,10 +97,10 @@ function displayGuestbooks(guestbooks) {
     list.innerHTML = guestbooks.map(gb => `
         <div class="guestbook-item">
             <div class="guestbook-header">
-                <span class="guestbook-name">${gb.name}</span>
-                <span class="guestbook-date">${formatDate(gb.createdAt)}</span>
+                <span class="guestbook-name">${gb.author_name}</span>
+                <span class="guestbook-date">${formatDate(gb.created)}</span>
             </div>
-            <div class="guestbook-message">${escapeHtml(gb.message)}</div>
+            <div class="guestbook-message">${escapeHtml(gb.content)}</div>
         </div>
     `).join('');
 }
@@ -125,7 +125,7 @@ async function submitGuestbook(e) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ name, message })
+            body: JSON.stringify({ author_name: name, content: message, password: 'dummy' })
         });
         
         if (response.ok) {
@@ -133,11 +133,11 @@ async function submitGuestbook(e) {
             document.getElementById('guestbookForm').reset();  // 폼 초기화
             loadGuestbooks();  // 방명록 목록 다시 불러오기
         } else {
-            alert('방명록 등록에 실패했어요ㅠㅠ 다시 시도해주세요!');
+            alert('방명록 등록에 실패했어요. 다시 시도해주세요.');
         }
     } catch (error) {
         console.error('방명록 등록 실패:', error);
-        alert('오류가 발생했어요!!!!!!');
+        alert('오류가 발생했어요.');
     }
 }
 
@@ -175,7 +175,7 @@ function addScrollAnimation() {
             }
         });
     }, {
-        threshold: 0.1  // 10%만 보여도 애니메이션 시작함 졸라 섣부르죠?
+        threshold: 0.1  // 10%만 보여도 애니메이션 시작함
     });
     
     // 각 섹션에 초기 스타일과 옵저버 적용

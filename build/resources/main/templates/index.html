@@ -7,6 +7,11 @@
 
     <title>최수인의 포트폴리오 📚</title>
     <link rel="stylesheet" href="/css/style.css">
+    <meta property="og:title" content="최수인의 포트폴리오">
+    <meta property="og:description" content="최수인의 포트폴리오입니다.">
+    <meta property="og:image" content="https://suin-s-portfolio.onrender.com/images/url.png">
+    <meta property="og:url" content="https://suin-s-portfolio.onrender.com/">
+    <meta property="og:type" content="website">
 </head>
 <body>
     <!--헤더(네비게이션 바)-->
@@ -95,7 +100,7 @@
             <!--방명록 작성-->
             <div class="guestbook-form">
                 <h3>방명록을 남겨주세요 💻</h3>
-                <from id="guestbookForm">
+                <form id="guestbookForm">
                     <div class="form-group">
                         <input type="text" id="name" name="name" placeholder="이름을 입력해주세요" required>
                     </div>
@@ -103,7 +108,7 @@
                         <textarea id="message" name="message" placeholder="내용을 입력해주세요" required></textarea>
                     </div>
                     <button type="submit" class="btn-submit">등록하기</button>
-                </from>
+                </form>
             </div>
            <!--방명록 목록이 로드됨-->
            <div class="guestbook-list" id="guestbookList">

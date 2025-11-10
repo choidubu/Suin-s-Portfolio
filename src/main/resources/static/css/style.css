@@ -2,6 +2,7 @@
 --Charcoal: #1F1F1F;
 --Gummetal: #2A2A2A;
 --LightGray: #F5F5F5;
+--SilverGray: #bdbdbd;
 --OffWhite: #FAFAFA;
 --SlateBlue: #5D6FA6;
 --OliveGray: #A0AD9B;
@@ -9,6 +10,7 @@
 --HexGray: #E0E0E0;
 --Gray: #666666;
 --DarkCyan: #095573;
+--CrimsonRed: #A63232;
 }
 
     *{
@@ -119,7 +121,7 @@ header {
     font-size: 1.5rem;
     font-weight: 500;
     padding: 0.75rem 1.5rem;
-    border: 1px solid var(--Gummetal);
+    border: 1px solid var(--SilverGray);
     border-radius: 10px;
     animation: float 4s ease-in-out infinite;
 }
@@ -153,7 +155,7 @@ header {
     border-radius: 10px;
     display: flex;
     align-items: center;
-    border: 1px solid var(--Gummetal);
+    border: 1px solid var(--SilverGray);
 }
 
 .about-content {
@@ -174,7 +176,7 @@ header {
 .info-item {
     display: flex;
     padding: 1rem 0;
-    border-bottom: 1px solid var(--Gray);
+    border-bottom: 1px solid var(--SilverGray);
 }
 
 .label {
@@ -217,7 +219,7 @@ header {
     background-color: var(--HexGray);
     padding: 2rem;
     border-radius: 10px;
-    border: 1px solid var(--Gummetal);
+    border: 1px solid var(--SilverGray);
     margin-bottom: 2rem;
 }
 
@@ -236,7 +238,7 @@ header {
 .form-group textarea {
     width: 100%;
     padding: 0.75rem 1rem;
-    border: 1px solid var(--Gray);
+    border: 1px solid var(--SilverGray);
     border-radius: 10px;
     font-size:1.3rem;
     font-family: inherit;
@@ -259,11 +261,16 @@ header {
     color: var(--LightGray);
     width: 100%;
     padding: 0.75rem;
-    border: 1px solid var(--Gummetal);
+    border: 1px solid var(--SilverGray);
     border-radius: 10px;
     cursor: pointer;
     font-weight: 500;
     font-size: 1.5rem;
+}
+
+.btn-submit:hover {
+    background-color: var(--LightGray);
+    color: var(--Gummetal);
 }
 
 .guestbook-list {
@@ -279,7 +286,48 @@ header {
     font-size: 1.5rem;
     background-color: var(--HexGray);
     border-radius: 10px;
-    border: 1px solid var(--Gray);
+    border: 1px solid var(--SilverGray);
+}
+
+/* 방명록 리스트 */
+.guestbook-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.guestbook-item {
+    background-color: var(--HexGray);
+    border: 1px solid var(--SilverGray);
+    border-radius: 10px;
+    padding: 2.5rem 3rem;
+}
+
+
+.guestbook-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.guestbook-author {
+    font-weight: 500;
+    color: var(--Gummetal);
+    font-size: 2.25rem;
+}
+
+.guestbook-message {
+    color: var(--Gummetal);
+    font-size: 1.5rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+.guestbook-date {
+    font-size: 1.25rem;
+    color: var(--Gummetal);
+    text-align: right;
 }
 
 /* 푸터 */
@@ -288,7 +336,7 @@ footer {
     color: var(--LightGray);
     text-align: center;
     padding: 1rem 0;
-    border-top: 1px solid var(--Gummetal);
+    border-top: 1px solid var(--SilverGray);
 }
 
 footer p {
@@ -317,7 +365,7 @@ footer p {
     background-color: var(--HexGray);
     padding: 3rem;
     border-radius: 10px;
-    border: 1px solid var(--Gummetal);
+    border: 1px solid var(--SilverGray);
 }
 
 .login-icon {
@@ -358,7 +406,7 @@ footer p {
     font-size: 1.25rem;
     margin-top: 1rem;
     font-weight: 600;
-    border: 1px solid var(--Gummetal);
+    border: 1px solid var(--SilverGray);
     border-radius: 10px;
 }
 
@@ -366,19 +414,6 @@ footer p {
     background-color: var(--LightGray);
     color: var(--Gummetal);
 }
-
-/*
-.error-message {
-    background-color: #fef2f2;
-    color: #dc2626;
-    padding: 0.875rem;
-    border-radius: 8px;
-    margin-bottom: 1.25rem;
-    text-align: center;
-    border: 1px solid #fecaca;
-    font-size: 0.875rem;
-}
-나중에 에러메세지 확인 가능할 때 다시..ㅠㅠ */
 
 .back-link {
     display: block;
@@ -399,6 +434,10 @@ footer p {
     display: flex;
     gap: 0.5rem;
     align-items: center;
+}
+
+.admin .logo {
+    font-size: 2.5rem;
 }
 
 .admin-nav {
@@ -493,12 +532,13 @@ footer p {
     padding: 0.75rem 1.5rem;
     font-size: 1.25rem;
     font-weight: 600;
-    border: 1px solid var(--Gummetal);
     border-radius: 10px;
+    border: 1px solid var(--SilverGray);
+    outline: none;
 }
 
 .btn-add:hover {
-    background-color: var(--HexGray);
+    background-color: var(--LightGray);
     color: var(--Gummetal);
     cursor: pointer;
 }
@@ -511,11 +551,11 @@ footer p {
 }
 
 .stat-box {
-    background-color: #ffffff;
+    background-color: var(--LightGray);
     padding: 2rem;
     border-radius: 12px;
     text-align: center;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--SilverGray);
 }
 
 .stat-box:hover {
@@ -524,12 +564,12 @@ footer p {
 
 .stat-number {
     font-size: 2.5rem;
-    color: #095573;
+    color: var(--Gummetal);
     font-weight: 700;
 }
 
 .stat-label {
-    color: #6b7280;
+    color: var(--Gray);
     margin-top: 0.5rem;
     font-size: 0.875rem;
     font-weight: 500;
@@ -544,16 +584,16 @@ footer p {
 .loading-text {
     grid-column: 1 / -1;
     text-align: center;
-    color: #9ca3af;
+    color: var(--Gummetal);
     padding: 3rem;
-    font-size: 0.938rem;
+    font-size: 1.5rem;
 }
 
 .project-item-admin {
-    background-color: #ffffff;
+    background-color: var(--LightGray);
     border-radius: 12px;
     padding: 1.5rem;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--SilverGray);
 }
 
 .project-item-admin:hover {
@@ -561,18 +601,18 @@ footer p {
 }
 
 .project-item-header {
-    color: #1a1a1a;
-    font-size: 1.125rem;
+    color: var(--Gummetal);
+    font-size: 1.25rem;
     margin-bottom: 1rem;
     font-weight: 700;
-    letter-spacing: -0.3px;
+    letter-spacing: -0.25px;
 }
 
 .project-item-desc {
-    color: #6b7280;
+    color: var(--Gummetal);
     margin-bottom: 1rem;
     line-height: 1.7;
-    font-size: 0.875rem;
+    font-size: 1rem;
 }
 
 .project-item-tech {
@@ -587,26 +627,28 @@ footer p {
     gap: 0.75rem;
     margin-top: 1.25rem;
     padding-top: 1.25rem;
-    border-top: 1px solid #f3f4f6;
+    border-top: 1px solid var(--SilverGray);
 }
 
 .btn-edit {
     flex: 1;
-    background-color: #095573;
-    color: white;
+    background-color: var(--SlateBlue);
+    color: var(--LightGray);
+    border-radius: 10px;
+    border: 1px solid var(--SilverGray);
     padding: 0.625rem;
-    border-color: #095573;
 }
 
 .btn-edit:hover {
-    background-color: #0B758C;
+    background-color: var(--LightGray);
+    color: var(--Gummetal);
 }
 
 .admin-table-container {
-    background-color: #ffffff;
+    background-color: var(--LightGray);
     border-radius: 12px;
     overflow: hidden;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--SilverGray);
 }
 
 .admin-table {
@@ -615,48 +657,286 @@ footer p {
 }
 
 .admin-table thead {
-    background-color: #fafafa;
-    border-bottom: 1px solid #e5e7eb;
+    background-color: var(--LightGray);
+    border-bottom: 1px solid var(--SilverGray);
 }
 
 .admin-table th,
 .admin-table td {
     padding: 1rem 1.5rem;
     text-align: left;
-    font-size: 0.875rem;
+    font-size: 1rem;
 }
 
 .admin-table th {
     font-weight: 600;
-    color: #374151;
+    color: var(--Gummetal);
 }
 
 .admin-table tbody tr {
-    border-bottom: 1px solid #f3f4f6;
+    border-bottom: 1px solid var(--SilverGray);
 }
 
 .admin-table tbody tr:hover {
-    background-color: #fafafa;
+    background-color: var(--LightGray);
 }
 
 .empty-cell {
     text-align: center;
-    color: #9ca3af;
-    padding: 2.5rem !important;
-    font-size: 0.875rem;
+    color: var(--Gray);
+    padding: 2.5rem;
+    font-size: 1rem;
 }
 
 .btn-delete {
-    background-color: #dc2626;
-    color: white;
-    padding: 0.5rem 1rem;
-    border: 1px solid #dc2626;
-    border-radius: 6px;
+    background-color: var(--CrimsonRed);
+    color: var(--LightGray);
+    padding: 1rem 2rem;
+    border: 1px solid var(--SilverGray);
+    border-radius: 10px;
     cursor: pointer;
-    font-size: 0.813rem;
+    font-size: 1.3rem;
     font-weight: 500;
 }
 
 .btn-delete:hover {
-    background-color: #b91c1c;
+    background-color: var(--LightGray);
+    color: var(--Gummetal);
+}
+
+/* ==== Project Modal ==== */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 어두운 반투명 배경 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    animation: fadeIn 0.25s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background-color: var(--HexGray);
+    border: 1px solid var(--SilverGray);
+    border-radius: 10px;
+    width: 100%;
+    max-width: 600px;
+    padding: 2.5rem 3rem;
+    color: var(--Gummetal);
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-large {
+    max-width: 720px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--SilverGray);
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+}
+
+.modal-header h3 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--Gummetal);
+    letter-spacing: -0.5px;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: var(--Gray);
+    cursor: pointer;
+}
+
+.modal-close:hover {
+    color: var(--DarkCyan);
+}
+
+.modal-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.modal-form label {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--Gummetal);
+    margin-bottom: 0.5rem;
+}
+
+.modal-form input,
+.modal-form textarea {
+    width: 100%;
+    padding: 0.9rem 1.2rem;
+    border: 1px solid var(--SilverGray);
+    border-radius: 10px;
+    background-color: var(--LightGray);
+    font-family: inherit;
+    font-size: 1.4rem;
+}
+
+.modal-form input:focus,
+.modal-form textarea:focus {
+    outline: none;
+}
+
+.modal-form textarea {
+    resize: none;
+    height: 12rem;
+}
+
+.form-row {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2.5rem;
+}
+
+.btn-cancel,
+.btn-primary {
+    background-color: var(--Gray);
+    color: var(--LightGray);
+    padding: 1rem 2rem;
+    border: 1px solid var(--SilverGray);
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1.3rem;
+    font-weight: 500;
+}
+
+.btn-cancel {
+    background-color: var(--SlateGray);
+    color: var(--LightGray);
+}
+
+.btn-cancel:hover {
+    background-color: var(--LightGray);
+    color: var(--Gummetal);
+}
+
+.btn-primary {
+    background-color: var(--SlateBlue);
+    color: var(--LightGray);
+}
+
+.btn-primary:hover {
+    background-color: var(--LightGray);
+    color: var(--Gummetal);
+}
+
+/* 에러 페이지 */
+.error-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--LightGray);
+    font-family: 'Pretendard', sans-serif;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+.error-container {
+    text-align: center;
+    background-color: var(--HexGray);
+    padding: 4rem 3rem;
+    border-radius: 12px;
+    border: 1px solid var(--LightGray);
+    max-width: 500px;
+    width: 100%;
+}
+
+.error-icon {
+    font-size: 5rem;
+    margin-bottom: 1rem;
+}
+
+.error-code {
+    font-size: 6rem;
+    font-weight: 700;
+    color: var(--Gummetal);
+    margin: 0;
+}
+
+.error-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--SlateGray);
+    margin: 0.5rem 0 1.5rem;
+}
+
+.error-message {
+    font-size: 1.5rem;
+    color: var(--SlateGray);
+    margin-bottom: 2.5rem;
+    line-height: 1.5;
+}
+
+.error-actions {
+    text-align: center;
+}
+
+.error-actions .btn-primary {
+    display: inline-block;
+    padding: 0.9rem 1.8rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    border-radius: 10px;
+    text-decoration: none;
+    background-color: var(--Gray);
+    border: 1px solid var(--LightGray);
+    color: var(--LightGray);
+    transition: all 0.2s ease-in-out;
+}
+
+.error-actions .btn-primary:hover {
+    background-color: var(--LightGray);
+    color: var(--Gummetal);
+    cursor: pointer;
+}
+
+.btn-secondary {
+    display: block;
+    text-align: center;
+    color: var(--DarkCyan);
+    margin-top: 1.25rem;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.3rem;
+}
+
+.btn-secondary:hover {
+    text-decoration: underline;
+}
+
+
+/* 기타 수정 */
+#deleteMessage {
+    font-size: 1.3rem;
+    color: var(--SlateGray);
 }
