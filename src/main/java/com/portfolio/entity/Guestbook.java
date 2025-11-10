@@ -1,5 +1,7 @@
+// Guestbook.java (수정된 최종 코드)
 package com.portfolio.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty; // 1. import 추가
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -13,17 +15,22 @@ public class Guestbook {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    // 작성자 이름
+    // 2. 필드명 매핑
+    @JsonProperty("author_name") // ⭐ JSON 응답 시 name 대신 author_name 사용
     @Column(nullable = false, length = 50)
     private String name;
     
-    // 메시지 내용
+    // 2. 필드명 매핑
+    @JsonProperty("content") // ⭐ JSON 응답 시 message 대신 content 사용
     @Column(nullable = false, length = 1000)
     private String message;
     
-    // 작성 날짜
+    // 2. 필드명 매핑
+    @JsonProperty("created") // ⭐ JSON 응답 시 createdAt 대신 created 사용
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
+    
+    // ... (나머지 메서드는 생략)
     
     // 엔티티 저장 전 자동으로 실행 - 생성일 설정
     @PrePersist

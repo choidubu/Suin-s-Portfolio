@@ -1,61 +1,70 @@
 // ===== 관리자 페이지 JavaScript - 프로젝트와 방명록 관리! =====
 
-let deleteTarget = null;  // 삭제할 대상 정보 저장
+let deleteTarget = null;  // 삭제할 대상 ID 저장
 let deleteType = '';  // 'project' 또는 'guestbook'
 
-// 페이지 로드되면 실행
+// 페이지 로드되면 자동 실행
 document.addEventListener('DOMContentLoaded', function() {
     loadProjectsAdmin();  // 프로젝트 목록 불러오기
     loadGuestbooksAdmin();  // 방명록 목록 불러오기
     
-    // 프로젝트 폼 제출 이벤트
+    // 프로젝트 폼 제출 이벤트 연결
     const projectForm = document.getElementById('projectForm');
     if (projectForm) {
         projectForm.addEventListener('submit', saveProject);
     }
 });
 
-// ===== 탭 전환 함수 =====
-// 프로젝트 관리와 방명록 관리 탭을 전환
+// =========================================================
+// 탭 관리 함수
+// =========================================================
+
+/**
+ * 탭 전환 함수
+ * @param {string} tabName 'projects' 또는 'guestbook'
+ */
 function switchTab(tabName) {
-    // 탭 전환 전 프로젝트 모달 닫음 (모달이 탭 위로 뜨는 현상 방지)
+    // 탭 전환 전 프로젝트 모달 닫음
     closeProjectModal();
     
-    // 모든 탭 버튼과 섹션 가져옴
     const tabBtns = document.querySelectorAll('.tab-btn');
     const projectsTab = document.getElementById('projects-tab');
     const guestbookTab = document.getElementById('guestbook-tab');
     
-    // 모든 탭 버튼의 active 클래스 제거함
+    // 모든 탭 버튼과 섹션 상태 초기화
     tabBtns.forEach(btn => btn.classList.remove('active'));
+    projectsTab.style.display = 'none';
+    guestbookTab.style.display = 'none';
     
     if (tabName === 'projects') {
-        // 프로젝트 탭 활성화
-        tabBtns[0].classList.add('active');
+        document.querySelector('.tab-btn:nth-child(1)').classList.add('active');
         projectsTab.style.display = 'block';
-        guestbookTab.style.display = 'none';
     } else if (tabName === 'guestbook') {
-        // 방명록 탭 활성화
-        tabBtns[1].classList.add('active');
-        projectsTab.style.display = 'none';
+        document.querySelector('.tab-btn:nth-child(2)').classList.add('active');
         guestbookTab.style.display = 'block';
     }
 }
 
-// ===== 프로젝트 목록 불러오기 (관리자용) =====
+// =========================================================
+// 프로젝트 관리 로직
+// =========================================================
+
+/**
+ * 프로젝트 목록 불러오기 (관리자용)
+ */
 async function loadProjectsAdmin() {
     try {
         const response = await fetch('/api/projects');
         const projects = await response.json();
         
-        // 통계 업데이트한다
+        // 통계 업데이트
         document.getElementById('totalProjects').textContent = projects.length;
         
-        // 최근 한 달 내 추가된 프로젝트 개수
+        // 최근 한 달 내 추가된 프로젝트 개수 (createdAt 필드 사용 가정)
         const oneMonthAgo = new Date();
         oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
         const recentCount = projects.filter(p =>
-            new Date(p.createdAt) > oneMonthAgo
+            p.createdAt && new Date(p.createdAt) > oneMonthAgo
         ).length;
         document.getElementById('recentProjects').textContent = recentCount;
         
@@ -65,24 +74,23 @@ async function loadProjectsAdmin() {
     }
 }
 
-// ===== 프로젝트 목록 표시 (관리자용) =====
+/**
+ * 프로젝트 목록 표시 (관리자용)
+ * @param {Array<Object>} projects - 프로젝트 데이터 배열
+ */
 function displayProjectsAdmin(projects) {
     const list = document.getElementById('projectListAdmin');
 
-    // 데이터 없으면 안내문
     if (!projects || projects.length === 0) {
         list.innerHTML = '<p class="loading-text">아직 프로젝트가 없어요. 첫 프로젝트를 추가해보세요! ➕</p>';
         return;
     }
 
-    // 프로젝트 리스트 출력
     list.innerHTML = projects.map(project => {
-        // techStack이 없을 수도 있으므로 안전하게 처리
         const techTags = (project.techStack || '').split(',')
             .map(tech => `<span class="tech-tag">${tech.trim()}</span>`)
             .join('');
 
-        // 각 필드도 안전하게 확인
         const title = project.title || '(제목 없음)';
         const description = project.description || '(설명 없음)';
         
@@ -104,18 +112,19 @@ function displayProjectsAdmin(projects) {
     }).join('');
 }
 
-// ===== 프로젝트 추가 모달 열기 ================
+/**
+ * 프로젝트 추가/수정 모달 열기
+ * @param {number|null} projectId - 수정할 프로젝트 ID (추가 시 null)
+ */
 function openProjectModal(projectId = null) {
     const modal = document.getElementById('projectModal');
     const modalTitle = document.getElementById('modalTitle');
     const form = document.getElementById('projectForm');
     
     if (projectId) {
-        // 수정 모드
         modalTitle.textContent = '프로젝트 수정';
         loadProjectData(projectId);
     } else {
-        // 추가 모드
         modalTitle.textContent = '프로젝트 추가';
         form.reset();
         document.getElementById('projectId').value = '';
@@ -124,14 +133,19 @@ function openProjectModal(projectId = null) {
     modal.style.display = 'flex';
 }
 
-// ===== 프로젝트 추가 모달 닫기 =====
+/**
+ * 프로젝트 추가 모달 닫기
+ */
 function closeProjectModal() {
     const modal = document.getElementById('projectModal');
     modal.style.display = 'none';
     document.getElementById('projectForm').reset();
 }
 
-// ===== 프로젝트 데이터 불러오기 (수정용) ===
+/**
+ * 프로젝트 데이터 불러오기 (수정용)
+ * @param {number} projectId
+ */
 async function loadProjectData(projectId) {
     try {
         const response = await fetch(`/api/projects/${projectId}`);
@@ -139,11 +153,12 @@ async function loadProjectData(projectId) {
         
         // 폼에 데이터 채우기
         document.getElementById('projectId').value = project.id;
-        document.getElementById('projectTitle').value = project.title;
-        document.getElementById('projectDesc').value = project.description;
-        document.getElementById('projectTech').value = project.techStack;
+        document.getElementById('projectTitle').value = project.title || '';
+        document.getElementById('projectDesc').value = project.description || '';
+        document.getElementById('projectTech').value = project.techStack || '';
         document.getElementById('projectGithub').value = project.githubUrl || '';
         document.getElementById('projectDemo').value = project.demoUrl || '';
+        // ⭐ 이미지 URL 필드: 백엔드에서 thumbnail 필드를 사용한다고 가정
         document.getElementById('projectThumbnail').value = project.thumbnail || ''; 
     } catch (error) {
         console.error('프로젝트 데이터 불러오기 실패:', error);
@@ -151,25 +166,28 @@ async function loadProjectData(projectId) {
     }
 }
 
-// ===== 프로젝트 저장하기 (추가/수정) =====
+/**
+ * 프로젝트 저장하기 (추가/수정)
+ * @param {Event} e 
+ */
 async function saveProject(e) {
     e.preventDefault();
     
     const projectId = document.getElementById('projectId').value;
     
-    const thumbnail = document.getElementById('projectThumbnail').value; 
-
     const projectData = {
         title: document.getElementById('projectTitle').value,
         description: document.getElementById('projectDesc').value,
         techStack: document.getElementById('projectTech').value,
         githubUrl: document.getElementById('projectGithub').value,
         demoUrl: document.getElementById('projectDemo').value,
-        thumbnail: thumbnail, 
+        // ⭐ 이미지 URL 필드 전송
+        thumbnail: document.getElementById('projectThumbnail').value, 
     };
     
     try {
-        const url = projectId ? `/api/projects/${projectId}` : '/api/projects';
+        // ⭐ 템플릿 리터럴 사용
+        const url = projectId ? `/api/projects/${projectId}` : '/api/projects'; 
         const method = projectId ? 'PUT' : 'POST'; 
         
         const response = await fetch(url, {
@@ -185,20 +203,28 @@ async function saveProject(e) {
             closeProjectModal();
             loadProjectsAdmin();
         } else {
-            alert('프로젝트 저장에 실패했어요.');
+            // 서버에서 에러 메시지를 JSON으로 반환하면 받아와서 표시
+            const errorText = await response.text(); 
+            alert(`프로젝트 저장에 실패했어요. (에러: ${errorText.substring(0, 50)}...)`);
         }
     } catch (error) {
         console.error('프로젝트 저장 실패:', error);
-        alert('오류가 발생했어요.');
+        alert('오류가 발생했어요. 네트워크를 확인해주세요.');
     }
 }
 
-// ===== 프로젝트 수정 =====
+/**
+ * 프로젝트 수정 버튼 클릭 이벤트
+ * @param {number} projectId
+ */
 function editProject(projectId) {
     openProjectModal(projectId);
 }
 
-// ===== 프로젝트 삭제 =====
+/**
+ * 프로젝트 삭제 확인 모달 열기
+ * @param {number} projectId
+ */
 function deleteProject(projectId) {
     deleteTarget = projectId;
     deleteType = 'project';
@@ -206,7 +232,13 @@ function deleteProject(projectId) {
     document.getElementById('deleteModal').style.display = 'flex';
 }
 
-// ===== 방명록 목록 불러오기 (관리자용) =====
+// =========================================================
+// 방명록 관리 로직
+// =========================================================
+
+/**
+ * 방명록 목록 불러오기 (관리자용)
+ */
 async function loadGuestbooksAdmin() {
     try {
         const response = await fetch('/api/guestbooks');
@@ -218,22 +250,34 @@ async function loadGuestbooksAdmin() {
         // 오늘 등록된 방명록 개수
         const today = new Date().toDateString();
         const todayCount = guestbooks.filter(gb => 
-            new Date(gb.created).toDateString() === today
+            gb.created && new Date(gb.created).toDateString() === today
         ).length;
         document.getElementById('todayGuestbooks').textContent = todayCount;
         
         displayGuestbooksAdmin(guestbooks);
     } catch (error) {
         console.error('방명록 불러오기 실패:', error);
+        // ⭐ 500 에러 발생 시 사용자에게 안내
+        const tbody = document.getElementById('adminGuestbookList');
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="5" class="error-cell">
+                    ⚠️ 서버 오류(500)로 인해 방명록을 불러올 수 없습니다. 서버 로그를 확인하세요.
+                </td>
+            </tr>
+        `;
     }
 }
 
-// ===== 방명록 목록 표시 (관리자용) =====
+/**
+ * 방명록 목록 표시 (관리자용) - 템플릿 리터럴 문법 오류 수정 완료
+ * @param {Array<Object>} guestbooks
+ */
 function displayGuestbooksAdmin(guestbooks) {
     const tbody = document.getElementById('adminGuestbookList');
     
     if (!guestbooks || guestbooks.length === 0) {
-        // 🚨 수정: 백틱(`)을 사용하여 HTML 문자열을 올바르게 정의합니다.
+        // ⭐ 백틱을 사용한 HTML 템플릿
         tbody.innerHTML = `
             <tr>
                 <td colspan="5" class="empty-cell">
@@ -245,7 +289,7 @@ function displayGuestbooksAdmin(guestbooks) {
     }
     
     tbody.innerHTML = guestbooks.map((gb, index) => 
-        // 🚨 수정: 백틱(`)을 사용하여 HTML 문자열을 올바르게 정의합니다.
+        // ⭐ 백틱을 사용한 HTML 템플릿
         `<tr>
             <td>${guestbooks.length - index}</td>
             <td>${escapeHtml(gb.author_name)}</td>
@@ -260,7 +304,10 @@ function displayGuestbooksAdmin(guestbooks) {
     ).join('');
 }
 
-// ===== 방명록 삭제 =====
+/**
+ * 방명록 삭제 확인 모달 열기
+ * @param {number} guestbookId
+ */
 function deleteGuestbook(guestbookId) {
     deleteTarget = guestbookId;
     deleteType = 'guestbook';
@@ -268,19 +315,27 @@ function deleteGuestbook(guestbookId) {
     document.getElementById('deleteModal').style.display = 'flex';
 }
 
-// ===== 삭제 확인 모달 닫기 =====
+// =========================================================
+// 공통 함수
+// =========================================================
+
+/**
+ * 삭제 확인 모달 닫기
+ */
 function closeDeleteModal() {
     document.getElementById('deleteModal').style.display = 'none';
     deleteTarget = null;
     deleteType = '';
 }
 
-// ===== 삭제 확인 =====
+/**
+ * 삭제 확인 및 실행 - 템플릿 리터럴 문법 오류 수정 완료
+ */
 async function confirmDelete() {
     if (!deleteTarget || !deleteType) return;
     
     try {
-        // 🚨 수정: 백틱(`)을 사용하여 URL 문자열 템플릿을 올바르게 정의합니다.
+        // ⭐ 백틱을 사용한 템플릿 문자열로 URL 구성
         const url = deleteType === 'project' 
             ? `/api/projects/${deleteTarget}` 
             : `/api/guestbooks/${deleteTarget}`;
@@ -293,7 +348,7 @@ async function confirmDelete() {
             alert('삭제되었습니다! ✅');
             closeDeleteModal();
             
-            // 목록 새로고침!!
+            // 목록 새로고침
             if (deleteType === 'project') {
                 loadProjectsAdmin();
             } else {
@@ -308,12 +363,14 @@ async function confirmDelete() {
     }
 }
 
-// ===== 날짜 포맷 함수 =====
+/**
+ * 날짜 포맷 함수 (YYYY-MM-DD HH:MM 형식) - 안전성 강화
+ * @param {string} dateString
+ */
 function formatDate(dateString) {
     if (!dateString) return '날짜 정보 없음';
 
     const date = new Date(dateString);
-    // Invalid Date일 경우 '날짜 오류' 반환 (NaN 오류 방지)
     if (isNaN(date.getTime())) {
         return '날짜 오류'; 
     }
@@ -324,13 +381,16 @@ function formatDate(dateString) {
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
     
-    // 🚨 수정: 백틱(`)을 사용하여 반환 문자열 템플릿을 올바르게 정의합니다.
+    // ⭐ 깔끔한 포맷
     return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')} ${hours}:${minutes}`;
 }
 
-// ===== HTML 이스케이프 함수 =====
+/**
+ * HTML 이스케이프 함수 (XSS 방지) - 안정성 강화
+ * @param {string} text
+ */
 function escapeHtml(text) {
-    if (text === null || text === undefined) return ''; // Null/Undefined 방지
+    if (text === null || text === undefined) return '';
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
