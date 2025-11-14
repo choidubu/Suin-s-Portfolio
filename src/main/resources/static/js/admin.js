@@ -326,16 +326,15 @@ async function confirmDelete() {
 
 function formatDate(dateString) {
     const date = new Date(dateString);
-    // KST = UTC+9
-    const kstTime = new Date(date.getTime() + 9*60*60*1000);
-
-    const year = kstTime.getFullYear();
-    const month = String(kstTime.getMonth() + 1).padStart(2, '0');
-    const day = String(kstTime.getDate()).padStart(2, '0');
-    const hours = String(kstTime.getHours()).padStart(2, '0');
-    const minutes = String(kstTime.getMinutes()).padStart(2, '0');
-
-    return `${year}년 ${month}월 ${day}일 ${hours}:${minutes}`;
+    return new Intl.DateTimeFormat('ko-KR', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+        timeZone: 'Asia/Seoul' // 명시적으로 KST로
+    }).format(date);
 }
 
 function escapeHtml(text) {
