@@ -325,18 +325,17 @@ async function confirmDelete() {
 }
 
 function formatDate(dateString) {
-    if (!dateString) return '날짜 정보 없음';
-
     const date = new Date(dateString);
-    if (isNaN(date.getTime())) return '날짜 오류';
+    // KST = UTC+9
+    const kstTime = new Date(date.getTime() + 9*60*60*1000);
 
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const year = kstTime.getFullYear();
+    const month = String(kstTime.getMonth() + 1).padStart(2, '0');
+    const day = String(kstTime.getDate()).padStart(2, '0');
+    const hours = String(kstTime.getHours()).padStart(2, '0');
+    const minutes = String(kstTime.getMinutes()).padStart(2, '0');
 
-    return `${year}-${month}-${day} ${hours}:${minutes}`;
+    return `${year}년 ${month}월 ${day}일 ${hours}:${minutes}`;
 }
 
 function escapeHtml(text) {
