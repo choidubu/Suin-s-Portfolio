@@ -330,13 +330,16 @@ function formatDate(dateString) {
     const date = new Date(dateString);
     if (isNaN(date.getTime())) return '날짜 오류';
 
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
+    // 한국 시간(KST)으로 변환: UTC + 9h
+    const kstDate = new Date(date.getTime() + 9 * 60 * 60 * 1000);
 
-    return `${year}-${String(month).padStart(2,'0')}-${String(day).padStart(2,'0')} ${hours}:${minutes}`;
+    const year = kstDate.getFullYear();
+    const month = String(kstDate.getMonth() + 1).padStart(2, '0');
+    const day = String(kstDate.getDate()).padStart(2, '0');
+    const hours = String(kstDate.getHours()).padStart(2, '0');
+    const minutes = String(kstDate.getMinutes()).padStart(2, '0');
+
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
 }
 
 function escapeHtml(text) {
