@@ -145,7 +145,16 @@
                         <input type="url" id="projectDemo" name="demoUrl" placeholder="https://...">
                     </div>
                 </div>
-                
+
+                <div class="form-group">
+                       <label for="projectThumbnail">썸네일 이미지 URL *</label>
+                       <input type="text" id="projectThumbnail" name="thumbnail" placeholder="프로젝트를 대표할 이미지 주소를 입력하세요 (필수)" required>
+                </div>
+                <div class="form-group">
+                <label>썸네일 이미지 미리보기</label>
+                <img id="thumbnailPreview" src="" alt="썸네일 미리보기" style="display:none; max-width:200px; max-height:120px; margin-top:10px; border:1px solid #ccc;">
+                </div>
+
                 <div class="modal-buttons">
                     <button type="button" class="btn btn-cancel" onclick="closeProjectModal()">취소</button>
                     <button type="submit" class="btn btn-primary">저장</button>

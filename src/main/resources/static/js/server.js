@@ -70,22 +70,23 @@ app.get('/api/projects', async (req, res) => {
 
 // 2. 프로젝트 개별 조회 (GET /api/projects/:id) - 추가됨
 app.get('/api/projects/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const result = await pool.query(
-      'SELECT id, title, description, github_url, demo_url, tech_stack AS "techStack" FROM projects WHERE id = $1',
-      [id]
-    );
-    if (result.rows.length === 0) {
-      res.status(404).send('프로젝트를 찾을 수 없습니다.');
-    } else {
-      res.json(result.rows[0]);
-    }
-  } catch (err) {
-    console.error('❌ 프로젝트 개별 불러오기 실패:', err);
-    res.status(500).send('DB 오류 발생');
-  }
+  try {
+    const { id } = req.params;
+    const result = await pool.query(
+      'SELECT id, title, description, github_url, demo_url, tech_stack AS "techStack", thumbnail FROM projects WHERE id = $1',
+      [id]
+    );
+    if (result.rows.length === 0) {
+      res.status(404).send('프로젝트를 찾을 수 없습니다.');
+    } else {
+      res.json(result.rows[0]);
+    }
+  } catch (err) {
+    console.error('❌ 프로젝트 개별 불러오기 실패:', err);
+    res.status(500).send('DB 오류 발생');
+  }
 });
+
 
 // 3. 프로젝트 추가 (POST /api/projects) - 기존 코드
 app.post('/api/projects', async (req, res) => {
@@ -105,26 +106,26 @@ app.post('/api/projects', async (req, res) => {
 
 // 4. 프로젝트 수정 (PUT /api/projects/:id) - 추가됨
 app.put('/api/projects/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { title, description, techStack, githubUrl, demoUrl } = req.body;
-    
-    const result = await pool.query(
-      `UPDATE projects 
-       SET title = $1, description = $2, tech_stack = $3, github_url = $4, demo_url = $5
-       WHERE id = $6 RETURNING id`,
-      [title, description, techStack, githubUrl, demoUrl, id]
-    );
-    
-    if (result.rows.length === 0) {
-      res.status(404).send('수정할 프로젝트를 찾을 수 없습니다.');
-    } else {
-      res.send('프로젝트 수정 완료!');
-    }
-  } catch (err) {
-    console.error('❌ 프로젝트 수정 실패:', err);
-    res.status(500).send('DB 오류 발생');
-  }
+  try {
+    const { id } = req.params;
+    const { title, description, techStack, githubUrl, demoUrl, thumbnail } = req.body;
+
+    const result = await pool.query(
+      `UPDATE projects 
+       SET title = $1, description = $2, tech_stack = $3, github_url = $4, demo_url = $5, thumbnail = $6
+       WHERE id = $7 RETURNING id`,
+      [title, description, techStack, githubUrl, demoUrl, thumbnail, id]
+    );
+
+    if (result.rows.length === 0) {
+      res.status(404).send('수정할 프로젝트를 찾을 수 없습니다.');
+    } else {
+      res.send('프로젝트 수정 완료!');
+    }
+  } catch (err) {
+    console.error('❌ 프로젝트 수정 실패:', err);
+    res.status(500).send('DB 오류 발생');
+  }
 });
 
 // 5. 프로젝트 삭제 (DELETE /api/projects/:id) - 추가됨

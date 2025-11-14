@@ -8,14 +8,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-// 프로젝트 서비스 - 비즈니스 로직을 처리하는 곳이여
+// 프로젝트 서비스 - 비즈니스 로직을 처리하는 곳
 @Service
 @Transactional
 public class ProjectService {
     
     private final ProjectRepository projectRepository;
     
-    // 생성자 주입 방식 (권장되는 방식임 이건)
+    // 생성자 주입 방식
     @Autowired
     public ProjectService(ProjectRepository projectRepository) {
         this.projectRepository = projectRepository;

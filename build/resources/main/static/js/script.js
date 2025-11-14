@@ -23,7 +23,7 @@ async function loadProjects() {
         displayProjects(projects);
     } catch (error) {
         console.error('프로젝트 불러오기 실패:', error);
-        const grid = document.getElementById('portfolioGrid');
+        const grid = document.getElementById('portfolio-grid');
         grid.innerHTML = '<p class="loading-message">프로젝트를 불러오는 중 오류가 발생했어요</p>';
     }
 }
@@ -31,7 +31,7 @@ async function loadProjects() {
 // ===== 프로젝트를 화면에 표시하기 =====
 // 받아온 프로젝트 데이터를 카드형태로 보여주
 function displayProjects(projects) {
-    const grid = document.getElementById('portfolioGrid');
+    const grid = document.getElementById('portfolio-grid');
     
     // 프로젝트가 하나도 없으면 빈 메시지 표시
     if (!projects || projects.length === 0) {
@@ -48,6 +48,11 @@ function displayProjects(projects) {
         
         return `
             <div class="project-card">
+                ${project.thum ? 
+                `<div class="card-image-container">
+        <img src="${project.thum}" alt="${project.title} 프로젝트 이미지">
+                 </div>` 
+                 : ''}
                 <div class="card-header">
                     <h3>${project.title}</h3>
                 </div>

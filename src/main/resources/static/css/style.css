@@ -29,6 +29,10 @@ body {
     font-size: 1.75rem;
 }
 
+section {
+    scroll-margin-top: 80px; 
+}
+
 /*===== header & nav ====*/
 header {
     background-color:var(--Gummetal);
@@ -141,7 +145,7 @@ header {
 .about {
     background-color: var(--LightGray);
     color: var(--Gummetal);
-    padding-bottom: 5rem;
+    padding-bottom: 8rem;
 }
 
 #about {
@@ -194,12 +198,121 @@ header {
 /* profolio 섹션 */
 .portfolio {
     background-color: var(--LightGray);
+    padding-bottom: 8rem;
 }
 
 .portfolio-grid {
     display: grid;
     grid-template-columns: repaet(autp-fit, minmax(340px, 1fr));
     gap: 2rem;
+}
+
+/* 프로젝트 카드*/
+.project-card {
+    background-color: var(--HexGray);
+    border-radius: 12px;
+    border: 1px solid var(--SilverGray);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* 카드 위에 마우스를 올렸을 때 */
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 10px rgba(--Gummetal)(0, 0, 0, 0.1);
+}
+
+/* 카드 내용 영역 공통 패딩 제거 */
+.project-card .card-header,
+.project-card .card-body,
+.project-card .card-footer {
+    padding: 0;
+}
+
+/* 헤더 */
+.project-card .card-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--SilverGray);
+}
+
+/* 본문 */
+.project-card .card-body {
+    padding: 15px 20px 5px;
+}
+
+/* 푸터 */
+.project-card .card-footer {
+    padding: 5px 20px 15px;
+}
+
+/* 헤더/제목 스타일 */
+.project-card .card-header h3 {
+    color: var(--Gummetal);
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+.project-card .project-desc {
+    color: var(--Gummetal);
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+/* 기술 스택 태그 스타일 */
+.tech-tag {
+    display: inline-block;
+    padding: 6px 10px;
+    background-color: var(--LightGray);
+    color: var(--Gummetal);
+    border-radius: 5px;
+    font-size: 1.25rem;
+    font-weight: 500;
+    border: 1px solid var(--SilverGray);
+    margin-right: 5px;
+}
+
+/* 푸터/버튼 컨테이너 */
+.project-card .card-footer {
+    display: flex;
+    justify-content: flex-start;
+    border-top: 1px solid var(--HexGray);
+}
+
+/* 버튼 공통 스타일 */
+.btn-github, .btn-demo {
+    display: inline-block;
+    padding: 8px 15px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    margin-right: 10px;
+    font-size: 1.5rem;
+}
+
+/* GitHub 버튼 */
+.btn-github {
+    background-color: var(--Gray);
+    color: var(--LightGray);
+    border: 1px solid var(--SilverGray);
+}
+
+.btn-github:hover {
+    background-color: var(--LightGray);
+    color: var(--Gummetal);
+}
+
+/* Demo 버튼 */
+.btn-demo {
+    background-color: var(--SlateBlue);
+    color: var(--LightGray);
+    border: 1px solid var(--SilverGray);
+}
+
+.btn-demo:hover {
+    background-color: var(--LightGray);
+    color: var(--Gummetal);
 }
 
 .loading-message {
@@ -213,6 +326,7 @@ header {
 /* 방명록 섹션 */
 #guestbook {
     background-color: var(--LightGray);
+    padding-bottom: 4rem;
 }
 
 .guestbook-form {
@@ -503,11 +617,6 @@ footer p {
     cursor: pointer;
     font-size: 1.25rem;
     font-weight: 600;
-    border-bottom: 1px solid var(--Gummetal);
-}
-
-.tab-btn.active {
-    border-bottom-color: var(--SlateBlue);
 }
 
 .tab-btn:hover {
@@ -551,7 +660,7 @@ footer p {
 }
 
 .stat-box {
-    background-color: var(--LightGray);
+    background-color: var(--HexGray);
     padding: 2rem;
     border-radius: 12px;
     text-align: center;
@@ -571,7 +680,7 @@ footer p {
 .stat-label {
     color: var(--Gray);
     margin-top: 0.5rem;
-    font-size: 0.875rem;
+    font-size: 1.25rem;
     font-weight: 500;
 }
 
@@ -590,7 +699,7 @@ footer p {
 }
 
 .project-item-admin {
-    background-color: var(--LightGray);
+    background-color: var(--HexGray);
     border-radius: 12px;
     padding: 1.5rem;
     border: 1px solid var(--SilverGray);
@@ -612,7 +721,7 @@ footer p {
     color: var(--Gummetal);
     margin-bottom: 1rem;
     line-height: 1.7;
-    font-size: 1rem;
+    font-size: 1.25rem;
 }
 
 .project-item-tech {
@@ -645,7 +754,7 @@ footer p {
 }
 
 .admin-table-container {
-    background-color: var(--LightGray);
+    background-color: var(--HexGray);
     border-radius: 12px;
     overflow: hidden;
     border: 1px solid var(--SilverGray);
@@ -657,7 +766,7 @@ footer p {
 }
 
 .admin-table thead {
-    background-color: var(--LightGray);
+    background-color: var(--Gray);
     border-bottom: 1px solid var(--SilverGray);
 }
 
@@ -665,12 +774,13 @@ footer p {
 .admin-table td {
     padding: 1rem 1.5rem;
     text-align: left;
-    font-size: 1rem;
+    font-size: 1.25rem;
 }
 
 .admin-table th {
     font-weight: 600;
-    color: var(--Gummetal);
+    color: var(--LightGray);
+    font-size: 1.25rem;
 }
 
 .admin-table tbody tr {

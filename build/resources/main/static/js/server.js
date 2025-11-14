@@ -59,7 +59,7 @@ app.get('/api/projects', async (req, res) => {
   try {
     // tech_stack -> "techStack", created_date -> "createdAt"으로 별칭 지정
     const result = await pool.query(
-      'SELECT id, title, description, github_url, demo_url, tech_stack AS "techStack", thumbnail, created_date AS "createdAt" FROM projects ORDER BY id DESC'
+      'SELECT id, title, description, github_url, demo_url, tech_stack AS "techStack", thumbnail, created_date AS "createdAt" FROM projects ORDER BY id DESC'
     );
     res.json(result.rows);
   } catch (err) {
@@ -70,22 +70,23 @@ app.get('/api/projects', async (req, res) => {
 
 // 2. 프로젝트 개별 조회 (GET /api/projects/:id) - 추가됨
 app.get('/api/projects/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const result = await pool.query(
-      'SELECT id, title, description, github_url, demo_url, tech_stack AS "techStack" FROM projects WHERE id = $1',
-      [id]
-    );
-    if (result.rows.length === 0) {
-      res.status(404).send('프로젝트를 찾을 수 없습니다.');
-    } else {
-      res.json(result.rows[0]);
-    }
-  } catch (err) {
-    console.error('❌ 프로젝트 개별 불러오기 실패:', err);
-    res.status(500).send('DB 오류 발생');
-  }
+  try {
+    const { id } = req.params;
+    const result = await pool.query(
+      'SELECT id, title, description, github_url, demo_url, tech_stack AS "techStack", thumbnail FROM projects WHERE id = $1',
+      [id]
+    );
+    if (result.rows.length === 0) {
+      res.status(404).send('프로젝트를 찾을 수 없습니다.');
+    } else {
+      res.json(result.rows[0]);
+    }
+  } catch (err) {
+    console.error('❌ 프로젝트 개별 불러오기 실패:', err);
+    res.status(500).send('DB 오류 발생');
+  }
 });
+
 
 // 3. 프로젝트 추가 (POST /api/projects) - 기존 코드
 app.post('/api/projects', async (req, res) => {
@@ -105,26 +106,26 @@ app.post('/api/projects', async (req, res) => {
 
 // 4. 프로젝트 수정 (PUT /api/projects/:id) - 추가됨
 app.put('/api/projects/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { title, description, techStack, githubUrl, demoUrl } = req.body;
-    
-    const result = await pool.query(
-      `UPDATE projects 
-       SET title = $1, description = $2, tech_stack = $3, github_url = $4, demo_url = $5
-       WHERE id = $6 RETURNING id`,
-      [title, description, techStack, githubUrl, demoUrl, id]
-    );
-    
-    if (result.rows.length === 0) {
-      res.status(404).send('수정할 프로젝트를 찾을 수 없습니다.');
-    } else {
-      res.send('프로젝트 수정 완료!');
-    }
-  } catch (err) {
-    console.error('❌ 프로젝트 수정 실패:', err);
-    res.status(500).send('DB 오류 발생');
-  }
+  try {
+    const { id } = req.params;
+    const { title, description, techStack, githubUrl, demoUrl, thumbnail } = req.body;
+
+    const result = await pool.query(
+      `UPDATE projects 
+       SET title = $1, description = $2, tech_stack = $3, github_url = $4, demo_url = $5, thumbnail = $6
+       WHERE id = $7 RETURNING id`,
+      [title, description, techStack, githubUrl, demoUrl, thumbnail, id]
+    );
+
+    if (result.rows.length === 0) {
+      res.status(404).send('수정할 프로젝트를 찾을 수 없습니다.');
+    } else {
+      res.send('프로젝트 수정 완료!');
+    }
+  } catch (err) {
+    console.error('❌ 프로젝트 수정 실패:', err);
+    res.status(500).send('DB 오류 발생');
+  }
 });
 
 // 5. 프로젝트 삭제 (DELETE /api/projects/:id) - 추가됨
@@ -150,7 +151,8 @@ app.delete('/api/projects/:id', async (req, res) => {
 // 1. 방명록 목록 (GET /api/guestbooks) - 수정됨: 비밀번호 제외 및 별칭 통일
 app.get('/api/guestbooks', async (req, res) => {
   try {
-    // 비밀번호를 제외하고, created_date를 "created"로 별칭 지정
+    // 🚨 핵심: DB 컬럼 이름을 프론트엔드(index.html, admin.js)가 기대하는 키 이름으로 별칭 지정.
+    // 또한, 암호(password)는 제외합니다.
     const result = await pool.query(
       'SELECT id, author_name, content, created_date AS created FROM guestbooks ORDER BY id DESC'
     );
@@ -160,7 +162,6 @@ app.get('/api/guestbooks', async (req, res) => {
     res.status(500).send('DB 오류 발생');
   }
 });
-
 // 2. 방명록 추가 (POST /api/guestbooks) - 기존 코드
 app.post('/api/guestbooks', async (req, res) => {
     // 1. 라우터 진입 디버깅 로그

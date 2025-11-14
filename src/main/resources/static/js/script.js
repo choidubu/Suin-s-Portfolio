@@ -48,11 +48,11 @@ function displayProjects(projects) {
         
         return `
             <div class="project-card">
-                ${project.imageUrl ? 
-                    `<div class="card-image-container">
-                        <img src="${project.imageUrl}" alt="${project.title} 프로젝트 이미지">
-                    </div>` 
-                    : ''}
+                ${project.thum ? 
+                `<div class="card-image-container">
+        <img src="${project.thum}" alt="${project.title} 프로젝트 이미지">
+                 </div>` 
+                 : ''}
                 <div class="card-header">
                     <h3>${project.title}</h3>
                 </div>
