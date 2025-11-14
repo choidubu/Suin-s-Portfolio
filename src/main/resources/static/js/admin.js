@@ -325,14 +325,20 @@ async function confirmDelete() {
 }
 
 function formatDateKST(dateString) {
-    const date = new Date(dateString); // UTC 기준
-    const kstTime = new Date(date.getTime() + 9 * 60 * 60 * 1000); // KST = UTC+9
+    if (!dateString) return '';
 
-    const year = kstTime.getUTCFullYear();
-    const month = String(kstTime.getUTCMonth() + 1).padStart(2, '0');
-    const day = String(kstTime.getUTCDate()).padStart(2, '0');
-    const hours = String(kstTime.getUTCHours()).padStart(2, '0');
-    const minutes = String(kstTime.getUTCMinutes()).padStart(2, '0');
+    // 서버에서 받은 UTC 시간
+    const date = new Date(dateString);
+
+    // KST로 변환 (UTC+9)
+    const kstOffset = 9 * 60; // 분 단위
+    const kstTime = new Date(date.getTime() + kstOffset * 60 * 1000);
+
+    const year = kstTime.getFullYear();
+    const month = String(kstTime.getMonth() + 1).padStart(2, '0');
+    const day = String(kstTime.getDate()).padStart(2, '0');
+    const hours = String(kstTime.getHours()).padStart(2, '0');
+    const minutes = String(kstTime.getMinutes()).padStart(2, '0');
 
     return `${year}년 ${month}월 ${day}일 ${hours}:${minutes}`;
 }
