@@ -327,18 +327,14 @@ async function confirmDelete() {
 function formatDateKST(dateString) {
     if (!dateString) return '';
 
-    // 서버에서 받은 UTC 시간
+    // 서버 값이 이미 KST 로컬임 → 그대로 Date 객체 생성
     const date = new Date(dateString);
 
-    // KST로 변환 (UTC+9)
-    const kstOffset = 9 * 60; // 분 단위
-    const kstTime = new Date(date.getTime() + kstOffset * 60 * 1000);
-
-    const year = kstTime.getFullYear();
-    const month = String(kstTime.getMonth() + 1).padStart(2, '0');
-    const day = String(kstTime.getDate()).padStart(2, '0');
-    const hours = String(kstTime.getHours()).padStart(2, '0');
-    const minutes = String(kstTime.getMinutes()).padStart(2, '0');
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
 
     return `${year}년 ${month}월 ${day}일 ${hours}:${minutes}`;
 }
