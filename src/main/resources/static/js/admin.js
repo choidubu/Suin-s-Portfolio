@@ -276,7 +276,7 @@ function displayGuestbooksAdmin(guestbooks) {
             <td>${guestbooks.length - index}</td>
             <td>${escapeHtml(gb.author_name)}</td>
             <td>${escapeHtml(gb.content)}</td>
-            <td>${formatDate(gb.created)}</td>
+            <td>${formatDateKST(gb.created)}</td>
             <td>
                 <button class="btn btn-delete" onclick="deleteGuestbook(${gb.id})">삭제</button>
             </td>
@@ -324,17 +324,17 @@ async function confirmDelete() {
     }
 }
 
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('ko-KR', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false,
-        timeZone: 'Asia/Seoul' // 명시적으로 KST로
-    }).format(date);
+function formatDateKST(dateString) {
+    const date = new Date(dateString); // UTC 기준
+    const kstTime = new Date(date.getTime() + 9 * 60 * 60 * 1000); // KST = UTC+9
+
+    const year = kstTime.getUTCFullYear();
+    const month = String(kstTime.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(kstTime.getUTCDate()).padStart(2, '0');
+    const hours = String(kstTime.getUTCHours()).padStart(2, '0');
+    const minutes = String(kstTime.getUTCMinutes()).padStart(2, '0');
+
+    return `${year}년 ${month}월 ${day}일 ${hours}:${minutes}`;
 }
 
 function escapeHtml(text) {
