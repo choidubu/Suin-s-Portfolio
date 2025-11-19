@@ -48,11 +48,13 @@ function displayProjects(projects) {
         
         return `
             <div class="project-card">
-                ${project.thum ? 
+                ${project.thumbnail ? 
                 `<div class="card-image-container">
-        <img src="${project.thum}" alt="${project.title} 프로젝트 이미지">
-                 </div>` 
-                 : ''}
+                    <img src="${project.thumbnail}" 
+                        alt="${project.title} 프로젝트 이미지"
+                        loading="lazy">
+                </div>` 
+                : ''}
                 <div class="card-header">
                     <h3>${project.title}</h3>
                 </div>
@@ -111,7 +113,7 @@ function displayGuestbooks(guestbooks) {
 }
 
 // ===== 방명록 작성하기 =====
-// 폼에 입력한 내용을 백엔드로 전송해서 저장함긔
+// 폼에 입력한 내용을 백엔드로 전송해서저장함긔
 async function submitGuestbook(e) {
     e.preventDefault();  // 폼 기본 동작(페이지 새로고침) 막기
     

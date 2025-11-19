@@ -33,6 +33,12 @@ public class Project {
     @Column(length = 500)
     private String demoUrl;
     
+    // 썸네일 이미지 - Base64 인코딩된 이미지 데이터 저장!
+    // TEXT 타입으로 큰 데이터도 저장 가능함
+    @Lob
+    @Column(columnDefinition = "TEXT")
+    private String thumbnail;
+    
     // 생성 날짜
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -113,6 +119,16 @@ public class Project {
     
     public void setDemoUrl(String demoUrl) {
         this.demoUrl = demoUrl;
+    }
+    
+    // 썸네일 Getter - Base64 데이터 가져오기
+    public String getThumbnail() {
+        return thumbnail;
+    }
+    
+    // 썸네일 Setter - Base64 데이터 저장하기
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
     
     public LocalDateTime getCreatedAt() {

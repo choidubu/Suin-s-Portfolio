@@ -1,7 +1,7 @@
 # --------------------
 # 빌드 스테이지
 # --------------------
-FROM eclipse-temurin:21-jdk AS build
+FROM eclipse-temurin:17-jdk AS build
 
 # Gradle 설치
 RUN apt-get update && \
@@ -22,7 +22,7 @@ RUN ./gradlew build -x test
 # --------------------
 # 런타임 스테이지
 # --------------------
-FROM eclipse-temurin:21-jdk
+FROM eclipse-temurin:17-jdk
 WORKDIR /app
 
 # Jar 이름 통일

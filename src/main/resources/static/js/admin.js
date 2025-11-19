@@ -1,5 +1,7 @@
 let deleteTarget = null;  // 삭제할 대상 ID 저장
 let deleteType = '';      // 'project' 또는 'guestbook'
+let currentThumbnailBase64 = '';  // Base64 데이터 임시 저장
+let isDeleting = false;  // 더블 클릭 방지 플래그
 
 // 페이지 로드 시 자동 실행
 document.addEventListener('DOMContentLoaded', function() {
@@ -12,34 +14,130 @@ document.addEventListener('DOMContentLoaded', function() {
         projectForm.addEventListener('submit', saveProject);
     }
 
-    // 썸네일 미리보기 이벤트 (통합, 안전 처리)
-    const thumbnailInput = document.getElementById('projectThumbnail');
+    // 파일 선택 시 미리보기 + Base64 변환 + 압축!
+    const thumbnailFileInput = document.getElementById('projectThumbnailFile');
     const thumbnailPreview = document.getElementById('thumbnailPreview');
 
-    if (thumbnailInput && thumbnailPreview) {
-        let debounceTimeout;
+    if (thumbnailFileInput && thumbnailPreview) {
+        thumbnailFileInput.addEventListener('change', async function(e) {
+            const file = e.target.files[0];
+            
+            if (!file) {
+                thumbnailPreview.style.display = 'none';
+                currentThumbnailBase64 = '';
+                return;
+            }
 
-        // 이미지 로딩 실패 시 숨기기
-        thumbnailPreview.onerror = () => {
-            thumbnailPreview.style.display = 'none';
-        };
+            // 파일 크기 체크 (500KB 이하만 허용)
+            if (file.size > 500 * 1024) {
+                alert('이미지 크기는 500KB 이하여야 해요! 😅\n현재 크기: ' + (file.size / 1024).toFixed(0) + 'KB');
+                thumbnailFileInput.value = '';
+                thumbnailPreview.style.display = 'none';
+                currentThumbnailBase64 = '';
+                return;
+            }
 
-        // 입력 이벤트 처리 (debounce)
-        thumbnailInput.addEventListener('input', () => {
-            clearTimeout(debounceTimeout);
-            debounceTimeout = setTimeout(() => {
-                const url = thumbnailInput.value.trim();
-                if (url) {
-                    thumbnailPreview.src = url;
-                    thumbnailPreview.style.display = 'block';
-                } else {
-                    thumbnailPreview.src = '';
-                    thumbnailPreview.style.display = 'none';
-                }
-            }, 300); // 300ms 대기 후 갱신
+            // 이미지 타입 체크
+            if (!file.type.startsWith('image/')) {
+                alert('이미지 파일만 업로드 가능해요! 📸');
+                thumbnailFileInput.value = '';
+                thumbnailPreview.style.display = 'none';
+                currentThumbnailBase64 = '';
+                return;
+            }
+
+            try {
+                // 자동 압축!
+                const compressedBlob = await compressImage(file);
+                const base64 = await blobToBase64(compressedBlob);
+                currentThumbnailBase64 = base64;
+                
+                // 미리보기 표시
+                thumbnailPreview.src = base64;
+                thumbnailPreview.style.display = 'block';
+                
+                console.log('원본:', (file.size / 1024).toFixed(0) + 'KB', '→ 압축:', (compressedBlob.size / 1024).toFixed(0) + 'KB');
+            } catch (error) {
+                console.error('이미지 변환 실패:', error);
+                alert('이미지를 불러오는데 실패했어요 😢');
+                thumbnailPreview.style.display = 'none';
+                currentThumbnailBase64 = '';
+            }
         });
     }
 });
+
+// 이미지 자동 압축 함수 - 800px 리사이즈 + JPEG 70% 품질
+async function compressImage(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        
+        reader.onload = (e) => {
+            const img = new Image();
+            
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+                
+                // 최대 너비 800px로 리사이즈
+                const maxWidth = 800;
+                if (width > maxWidth) {
+                    height = (height * maxWidth) / width;
+                    width = maxWidth;
+                }
+                
+                canvas.width = width;
+                canvas.height = height;
+                
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                // JPEG 70% 품질로 압축
+                canvas.toBlob((blob) => {
+                    if (blob) {
+                        resolve(blob);
+                    } else {
+                        reject(new Error('이미지 압축 실패'));
+                    }
+                }, 'image/jpeg', 0.7);
+            };
+            
+            img.onerror = () => reject(new Error('이미지 로드 실패'));
+            img.src = e.target.result;
+        };
+        
+        reader.onerror = () => reject(new Error('파일 읽기 실패'));
+        reader.readAsDataURL(file);
+    });
+}
+
+// Blob을 Base64로 변환
+function blobToBase64(blob) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(new Error('Blob 변환 실패'));
+        reader.readAsDataURL(blob);
+    });
+}
+
+// 파일을 Base64로 변환하는 헬퍼 함수
+function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        
+        reader.onload = () => {
+            resolve(reader.result);  // data:image/jpeg;base64,/9j/4AAQ... 형식
+        };
+        
+        reader.onerror = () => {
+            reject(new Error('파일 읽기 실패'));
+        };
+        
+        reader.readAsDataURL(file);  // Base64로 변환
+    });
+}
 
 // =========================================================
 // 탭 관리 함수
@@ -103,12 +201,15 @@ function displayProjectsAdmin(projects) {
         const title = project.title || '(제목 없음)';
         const description = project.description || '(설명 없음)';
         
+        // thumbnail이 Base64 데이터야! 그대로 img src에 넣으면 돼
+        const thumbnailSrc = project.thumbnail || '';
+        
         return `
             <div class="project-item-admin">
                 <h4 class="project-item-header">${title}</h4>
                 <p class="project-item-desc">${description}</p>
                 <div class="project-item-tech">${techTags}</div>
-                <img src="${project.thumbnail || ''}" alt="프로젝트 썸네일" style="max-width:150px; max-height:100px;">
+                ${thumbnailSrc ? `<img src="${thumbnailSrc}" alt="프로젝트 썸네일" style="max-width:150px; max-height:100px; object-fit:cover; border-radius:4px;">` : ''}
                 <div class="project-item-actions">
                     <button class="btn btn-edit" onclick="editProject(${project.id})">수정</button>
                     <button class="btn btn-delete" onclick="deleteProject(${project.id})">삭제</button>
@@ -123,15 +224,19 @@ function openProjectModal(projectId = null) {
     const modalTitle = document.getElementById('modalTitle');
     const form = document.getElementById('projectForm');
     const preview = document.getElementById('thumbnailPreview');
+    const fileInput = document.getElementById('projectThumbnailFile');
 
     if (projectId) {
         modalTitle.textContent = '프로젝트 수정';
+        fileInput.removeAttribute('required');  // 수정 시에는 이미지 선택 안 해도 됨
         loadProjectData(projectId);
     } else {
         modalTitle.textContent = '프로젝트 추가';
         form.reset();
         document.getElementById('projectId').value = '';
         preview.style.display = 'none';
+        currentThumbnailBase64 = '';
+        fileInput.setAttribute('required', 'required');  // 추가 시에는 이미지 필수
     }
 
     modal.style.display = 'flex';
@@ -141,6 +246,7 @@ function closeProjectModal() {
     const modal = document.getElementById('projectModal');
     modal.style.display = 'none';
     document.getElementById('projectForm').reset();
+    currentThumbnailBase64 = '';
 }
 
 async function loadProjectData(projectId) {
@@ -154,14 +260,16 @@ async function loadProjectData(projectId) {
         document.getElementById('projectTech').value = project.techStack || '';
         document.getElementById('projectGithub').value = project.githubUrl || '';
         document.getElementById('projectDemo').value = project.demoUrl || '';
-        document.getElementById('projectThumbnail').value = project.thumbnail || '';
 
         const preview = document.getElementById('thumbnailPreview');
         if (project.thumbnail) {
+            // 기존 이미지가 있으면 미리보기 표시하고 Base64 저장
             preview.src = project.thumbnail;
             preview.style.display = 'block';
+            currentThumbnailBase64 = project.thumbnail;
         } else {
             preview.style.display = 'none';
+            currentThumbnailBase64 = '';
         }
     } catch (error) {
         console.error('프로젝트 데이터 불러오기 실패:', error);
@@ -173,14 +281,14 @@ async function saveProject(e) {
     e.preventDefault();
     
     const projectId = document.getElementById('projectId').value;
-    const thumbnailUrl = document.getElementById('projectThumbnail').value.trim();
-    const preview = document.getElementById('thumbnailPreview');
 
-    if (thumbnailUrl) {
-        preview.src = thumbnailUrl;
-        preview.style.display = 'block';
-    } else {
-        preview.style.display = 'none';
+    // 새 이미지를 선택하지 않았으면 기존 Base64 데이터 사용
+    const finalThumbnail = currentThumbnailBase64;
+
+    if (!finalThumbnail && !projectId) {
+        // 새로 추가하는데 이미지가 없으면 에러
+        alert('이미지를 선택해주세요! 📸');
+        return;
     }
 
     const projectData = {
@@ -189,7 +297,7 @@ async function saveProject(e) {
         techStack: document.getElementById('projectTech').value,
         githubUrl: document.getElementById('projectGithub').value,
         demoUrl: document.getElementById('projectDemo').value,
-        thumbnail: thumbnailUrl
+        thumbnail: finalThumbnail  // Base64 데이터 전송!
     };
 
     try {
@@ -300,8 +408,18 @@ function closeDeleteModal() {
     deleteType = '';
 }
 
+// 삭제 함수 - 더블 클릭 방지 + 204/404 처리!
 async function confirmDelete() {
     if (!deleteTarget || !deleteType) return;
+    
+    // 이미 삭제 중이면 리턴!
+    if (isDeleting) {
+        console.log('⚠️ 이미 삭제 처리 중입니다...');
+        return;
+    }
+    
+    isDeleting = true;  // 플래그 설정
+    console.log('🗑️ 삭제 시작:', deleteType, deleteTarget);
     
     try {
         const url = deleteType === 'project' 
@@ -309,34 +427,46 @@ async function confirmDelete() {
             : `/api/guestbooks/${deleteTarget}`;
 
         const response = await fetch(url, { method: 'DELETE' });
+        console.log('📡 서버 응답:', response.status, response.statusText);
 
-        if (response.ok) {
+        // 204 No Content = 삭제 성공!
+        if (response.status === 204 || response.ok) {
             alert('삭제되었습니다! ✅');
             closeDeleteModal();
             if (deleteType === 'project') loadProjectsAdmin();
             else loadGuestbooksAdmin();
-        } else {
-            alert('삭제에 실패했어요 😢');
+        } 
+        // 404 = 이미 삭제됨 (화면 새로고침)
+        else if (response.status === 404) {
+            alert('이미 삭제된 항목입니다 😅');
+            closeDeleteModal();
+            if (deleteType === 'project') loadProjectsAdmin();
+            else loadGuestbooksAdmin();
+        } 
+        // 기타 에러
+        else {
+            alert('삭제에 실패했어요 😢\n상태 코드: ' + response.status);
         }
     } catch (error) {
-        console.error('삭제 실패:', error);
-        alert('오류가 발생했어요 😢');
+        console.error('❌ 삭제 실패:', error);
+        alert('오류가 발생했어요 😢\n' + error.message);
+    } finally {
+        isDeleting = false;  // 완료 후 플래그 해제
+        console.log('✅ 삭제 처리 완료');
     }
 }
 
+// 한국 시간 포맷팅 함수
 function formatDateKST(dateString) {
     if (!dateString) return '';
 
     const date = new Date(dateString);
     
-    // UTC → KST 변환 (UTC +9)
-    const kstTime = new Date(date.getTime() + 9 * 60 * 60 * 1000);
-
-    const year = kstTime.getFullYear();
-    const month = String(kstTime.getMonth() + 1).padStart(2, '0');
-    const day = String(kstTime.getDate()).padStart(2, '0');
-    const hours = String(kstTime.getHours()).padStart(2, '0');
-    const minutes = String(kstTime.getMinutes()).padStart(2, '0');
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
 
     return `${year}년 ${month}월 ${day}일 ${hours}:${minutes}`;
 }

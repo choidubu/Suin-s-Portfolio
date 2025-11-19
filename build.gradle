@@ -10,9 +10,10 @@ group = 'com.portfolio'
 version = '1.0.0'
 
 // Java 버전 설정 (17 이상 필요함 그래들은 최신이라)
+// ✨ Java 21 → 17로 변경! 설치된 버전에 맞춰줬어용
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
@@ -64,4 +65,3 @@ task copyDependencies(type: Copy) {
 springBoot {
     mainClass = 'com.portfolio.PortfolioApplication'
 }
-
