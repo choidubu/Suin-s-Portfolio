@@ -728,6 +728,12 @@ footer p {
     border-radius: 12px;
     padding: 1.5rem;
     border: 1px solid var(--SilverGray);
+    display: flex;           /* 플렉스박스 적용 */
+    flex-direction: column;  /* 세로 방향 쌓기 */
+    justify-content: space-between; /* 내용과 버튼 사이 공간 최대화 */
+    height: 100%;            /* 부모 높이에 맞추기(부모 높이 지정 필요) */
+    min-height: 350px;       /* 카드 최소 높이 지정, 필요시 조절 */
+
 }
 
 .project-item-admin:hover {
