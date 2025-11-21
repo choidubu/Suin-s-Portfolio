@@ -1086,37 +1086,33 @@ footer p {
 
 /* 모바일 설정 */
 @media (max-width: 768px) {
-    /* 기본 설정 조정 */
+    /* 기본 설정 */
     body {
-        /* 모바일에서 폰트 크기 미세 조정 */
         font-size: 1.6rem; 
     }
 
     .container {
-        /* 모바일에서 좌우 여백을 늘려 내용이 끝에 붙지 않게 함 */
         padding: 0 1.5rem; 
         max-width: 100%;
     }
 
     .section {
-        /* 모바일에서 섹션 상하 패딩 조정 */
         padding: 3rem 0;
+        max-width: 100%;
     }
 
     .section-title {
-        /* 모바일에서 제목 크기 조정 */
         font-size: 2.5rem; 
         margin-bottom: 2rem;
     }
 
-    /* --- 헤더/네비게이션 --- */
-     .nav {
+    /* 헤더/네비게이션 */
+    .nav {
         flex-wrap: wrap;
         justify-content: center;
         gap: 1rem;
         padding: 1rem 2rem;
     }
-
 
     .nav-menu {
         flex-basis: 100%;
@@ -1124,13 +1120,9 @@ footer p {
         gap: 0.75rem;
     }
 
-     .nav-menu a {
+    .nav-menu a {
         font-size: 1.25rem;
         padding: 0.5rem 0.75rem;
-    }
-
-    .section {
-        max-width: 100%
     }
 
     .logo {
@@ -1139,52 +1131,53 @@ footer p {
         font-size: 2rem;
         margin-bottom: 0.5rem;
     }
-    
+
     .login-btn {
-        /* 로그인 버튼을 메뉴 목록에 통합하거나 별도 스타일 조정 */
         margin-top: 1rem;
     }
 
-    /* --- 카드 섹션 --- */
+    /* 카드 섹션 */
     .cards {
-        flex-direction: row;    
-        flex-wrap: wrap;
-        justify-content: center;
+        flex-direction: column;
         gap: 1rem;
         padding-top: 4rem;
         padding-bottom: 3rem;
     }
 
     .card {
-        flex: 1 1 calc(33.333% - 1rem); /* 화면의 절반씩 차지, gap 고려 */
-        max-width: calc(33.333% - 1rem);
+        flex: 1 1 100%;
+        max-width: 100%;
         margin: 0;
     }
 
-    /* --- About 섹션 --- */
+    /* About 섹션 */
     .about-content {
-        display: flex;
-        flex-direction: row;     
-        align-items: flex-start; 
-        gap: 1rem;             
-        flex-wrap: nowrap;     
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    align-items: stretch; 
+    flex-wrap: wrap;  
     }
 
     .profile-image {
-        flex: 0 0 auto;          
+    flex: 0 0 auto;    
+    display: flex;
+    align-items: center; 
     }
 
     .profile-image img {
-        width: auto; 
-        height: 100%;   
-        border-radius: 10px;
-        border: 1px solid var(--SilverGray);
-        display: block;
+    width: auto;         
+    height: 100%;         
+    max-height: 200px;   
+    max-width: 40vw;      
+    border-radius: 10px;
+    border: 1px solid var(--SilverGray);
+    display: block;
     }
 
     .info-box {
-        flex: 1 1 auto;  
-        min-width: 0;          
+    flex: 1 1 auto;     
+    min-width: 0;     
     }
 
     .info-box h3 {
@@ -1202,91 +1195,74 @@ footer p {
         font-size: 1.25rem;
     }
 
-    /* --- Portfolio 섹션 --- */
-    .portfolio-grid {
-        /* minmax 설정이 모바일에서는 하나의 열만 유지하도록 조정 */
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-
-    /* --- 방명록 섹션 --- */
+    /* 방명록 섹션 */
     .guestbook-form,
     .guestbook-item {
-        /* 모바일에서 패딩 조정 */
         padding: 1.5rem 2rem;
     }
 
     .guestbook-header {
-        /* 제목과 날짜를 세로로 쌓아 가독성 확보 */
         flex-direction: column;
         align-items: flex-start;
     }
     
     .guestbook-author {
-        /* 작성자 크기 조정 */
         font-size: 2rem;
         margin-bottom: 0.25rem;
     }
 
     .guestbook-date {
-        /* 날짜 정렬을 왼쪽으로 변경 */
         text-align: left;
         font-size: 1.1rem;
     }
 
     .form-row {
-        /* 모달 폼의 가로 정렬 요소를 세로로 변경 */
         flex-direction: column;
         gap: 0;
     }
 
-    /* --- Admin Page --- */
+    /* Admin Page */
     .admin .nav {
-         max-width: 1200px;  
-         margin: 0 auto;
-         padding: 0 2rem;  
-         flex-direction: row;          /* 가로 정렬 */
-         justify-content: space-between;
-         align-items: center;
-         flex-wrap: wrap;              /* 화면 작으면 줄 바꿈 */
-         gap: 1rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
     }
 
     .admin-nav {
-         margin-left: auto;            /* 이름과 버튼 우측 정렬 */
-         margin-top: 0;
-         width: auto;                  /* 기존 100% 제거 */
-         justify-content: flex-end;    /* index nav처럼 오른쪽 정렬 */
-         display: flex;                /* flex 없으면 align 안 됨 */
-         gap: 0.25rem;                  /* 버튼 간 간격 */
+        margin-left: auto;
+        margin-top: 0;
+        width: auto;
+        justify-content: flex-end;
+        display: flex;
+        gap: 0.25rem;
     }
 
     .stats-container {
-        /* 통계 박스를 한 줄에 2개씩 보이게 조정 */
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     }
 
-    /* --- 모달 창 --- */
+    /* 모달 창 */
     .modal-content {
-        /* 모바일에서 모달 창의 너비를 넓게 사용 */
         max-width: 90%;
         padding: 2rem;
     }
     
     .modal-header h3 {
-        /* 모바일에서 모달 제목 크기 조정 */
         font-size: 1.8rem;
     }
     
     .modal-buttons {
-        /* 모달 버튼을 전체 너비로 사용하거나 세로로 쌓기 */
         flex-direction: column;
         gap: 0.75rem;
     }
     
     .btn-cancel,
     .btn-primary {
-        /* 버튼이 전체 너비를 차지하도록 설정 */
         width: 100%;
         text-align: center;
         padding: 0.75rem;
@@ -1296,16 +1272,14 @@ footer p {
         overflow-x: hidden;
     }
 
-    /* --- About 섹션 충돌 해결 --- */
+    /* About 섹션 충돌 해결 */
     .info-item {
-    /* 라벨과 값을 세로로 쌓음 (기존 about-content는 세로로 변경됨) */
-    flex-direction: column; 
-    align-items: flex-start;
+        flex-direction: column;
+        align-items: flex-start;
     }
 
     .label {
-    /* 최소 너비 제한 제거하여 유동적으로 만듦 */
-    min-width: auto; 
-    margin-bottom: 0.25rem;
+        min-width: auto;
+        margin-bottom: 0.25rem;
     }
 }
