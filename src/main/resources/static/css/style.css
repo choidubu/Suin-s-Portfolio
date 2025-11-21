@@ -1088,6 +1088,7 @@ footer p {
     .container {
         /* 모바일에서 좌우 여백을 늘려 내용이 끝에 붙지 않게 함 */
         padding: 0 1.5rem; 
+        max-width: 100%;
     }
 
     .section {
@@ -1106,6 +1107,7 @@ footer p {
         /* 모바일에서는 세로로 쌓이도록 변경 (로고, 메뉴) */
         flex-direction: column;
         padding: 1rem 1.5rem;
+        max-width: 100%
     }
 
     .nav-menu {
@@ -1121,6 +1123,10 @@ footer p {
         display: block;
         text-align: center;
         padding: 0.75rem 1rem;
+    }
+
+    .section {
+        max-width: 100%
     }
 
     .logo {
@@ -1158,8 +1164,12 @@ footer p {
 
     .profile-image img {
         /* 모바일에서 이미지 크기 조정 */
-        width: 150px;
-        height: 200px;
+        width: 100%;
+        max-width: 180px;
+        height: auto;
+        object-fit: cover;
+        display: block;
+        margin: 0 auto;
     }
 
     .info-box {
@@ -1250,5 +1260,9 @@ footer p {
         width: 100%;
         text-align: center;
         padding: 0.75rem;
+    }
+
+    body, html {
+        overflow-x: hidden;
     }
 }
