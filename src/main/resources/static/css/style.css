@@ -187,6 +187,8 @@ header {
     font-weight: 600;
     color: var(--Gummetal);
     font-size: 1.5rem;
+    width: 7rem;
+    margin-right: 2rem;
 }
 
 .value {
@@ -727,6 +729,9 @@ footer p {
     border-radius: 12px;
     padding: 1.5rem;
     border: 1px solid var(--SilverGray);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .project-item-admin:hover {
@@ -755,10 +760,14 @@ footer p {
     margin-bottom: 1.25rem;
 }
 
+.project-item-admin img {
+    margin-bottom: 1rem;
+}
+
 .project-item-actions {
     display: flex;
     gap: 0.75rem;
-    margin-top: 1.25rem;
+    margin-top: auto;
     padding-top: 1.25rem;
     border-top: 1px solid var(--SilverGray);
 }
@@ -1106,7 +1115,8 @@ footer p {
         /* 모바일에서는 세로로 쌓이도록 변경 (로고, 메뉴) */
         flex-direction: column;
         padding: 1rem 1.5rem;
-        max-width: 100%
+        max-width: 100%;
+        align-items: center;
     }
 
     .nav-menu {
@@ -1116,14 +1126,16 @@ footer p {
         width: 100%;
         margin-top: 1rem;
         gap: 0.5rem;
+        justify-content: center;
+        align-items: center;
     }
 
     .nav-menu a {
         /* 메뉴 항목이 블록 요소로 전체 너비를 차지하도록 설정 */
         display: block;
         text-align: center;
-        padding: 0.25rem 0.5rem;
-        font-size: 1rem;
+        padding: 0.5rem 0.1rem;
+        font-size: 1.25rem;
     }
 
     .section {
@@ -1132,6 +1144,7 @@ footer p {
 
     .logo {
         /* 모바일에서 로고 크기 조정 */
+        margin: 0 auto;
         font-size: 2.2rem; 
     }
     
