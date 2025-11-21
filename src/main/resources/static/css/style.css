@@ -186,7 +186,6 @@ header {
 .label {
     font-weight: 600;
     color: var(--Gummetal);
-    min-width: 130px;
     font-size: 1.5rem;
 }
 
@@ -1264,5 +1263,18 @@ footer p {
 
     body, html {
         overflow-x: hidden;
+    }
+
+    /* --- About 섹션 충돌 해결 --- */
+    .info-item {
+    /* 라벨과 값을 세로로 쌓음 (기존 about-content는 세로로 변경됨) */
+    flex-direction: column; 
+    align-items: flex-start;
+    }
+
+    .label {
+    /* 최소 너비 제한 제거하여 유동적으로 만듦 */
+    min-width: auto; 
+    margin-bottom: 0.25rem;
     }
 }
