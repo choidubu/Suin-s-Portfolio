@@ -1163,24 +1163,28 @@ footer p {
 
     /* --- About 섹션 --- */
     .about-content {
-        flex-direction: row;      
-        gap: 1.5rem;              
-        align-items: flex-start;  
-        justify-content: flex-start; 
-        flex-wrap: nowrap;
+        display: flex;
+        flex-direction: row;     
+        align-items: flex-start; 
+        gap: 1rem;             
+        flex-wrap: nowrap;     
+    }
+
+    .profile-image {
+        flex: 0 0 auto;          
     }
 
     .profile-image img {
-        width: 230px;            
-        height: auto;
+        width: auto; 
+        height: 100%;   
         border-radius: 10px;
         border: 1px solid var(--SilverGray);
-        margin: 0;                  
+        display: block;
     }
 
     .info-box {
-        flex: 1;
-        padding: 0;
+        flex: 1 1 auto;  
+        min-width: 0;          
     }
 
     .info-box h3 {

@@ -1163,24 +1163,28 @@ footer p {
 
     /* --- About 섹션 --- */
     .about-content {
-        flex-direction: row;      
-        gap: 1.5rem;              
-        align-items: flex-start;  
-        justify-content: flex-start; 
-        flex-wrap: nowrap;
+        display: flex;
+        flex-direction: row;      /* 가로 정렬 */
+        align-items: flex-start;  /* 이미지 기준으로 글 상단 맞춤 */
+        gap: 1rem;                /* 이미지와 글 사이 간격 */
+        flex-wrap: nowrap;         /* 한 줄 유지 */
+    }
+
+    .profile-image {
+        flex: 0 0 auto;           /* 이미지 고정이 아니라 최소 크기로 유지 */
     }
 
     .profile-image img {
-        width: 230px;            
-        height: auto;
+        width: auto; 
+        height: 100%;   
         border-radius: 10px;
         border: 1px solid var(--SilverGray);
-        margin: 0;                  
+        display: block;
     }
 
     .info-box {
-        flex: 1;
-        padding: 0;
+        flex: 1 1 auto;           /* 나머지 공간을 글이 채움 */
+        min-width: 0;             /* 긴 글도 넘치지 않게 */
     }
 
     .info-box h3 {
