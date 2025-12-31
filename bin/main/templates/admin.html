@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    
+    <title>관리자 페이지 🛠</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!--관리자페이지 헤더-->
+    <header>
+        <nav>
+            <div class="nav">
+                <h1 class="logo">Admin page</h1>
+                <div class="admin-nav">
+                    <span class="admin-name">수인님 환영합니다!</span>
+                    <a href="/" class="btn-small">메인으로</a>
+                    <a href="/logout" class="btn-logout">로그아웃</a>
+                </div>
+        </nav>
+    </header>
+    
+    <!--탭 메뉴(프로젝트 관리/방명록 관리)-->
+    <div class="tab-menu">
+        <div class="container">
+            <div class="tabs">
+                <button class="tab-btn" onclick="switchTab('projects')">
+                    프로젝트 관리
+                </button>
+                <button class="tab-btn" onclick="switchTab('guestbook')">
+                    방명록 관리
+                </button>                
+            </div>
+        </div>
+    </div>
+
+    <!-- 프로젝트 관리 섹션 -->
+    <section id="projects-tab" class="admin-section">
+        <div class="container">
+            <h2 class="section-title">프로젝트 관리</h2>
+            
+            <!-- 새 프로젝트 추가 버튼 -->
+            <div class="add-project-btn-container">
+                <button class="btn btn-add" onclick="openProjectModal()">
+                    새 프로젝트 추가
+                </button>
+            </div>
+
+            <!-- 통계 정보 -->
+            <div class="stats-container">
+                <div class="stat-box">
+                    <div class="stat-number" id="totalProjects">0</div>
+                    <div class="stat-label">전체 프로젝트</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="recentProjects">0</div>
+                    <div class="stat-label">최근 추가</div>
+                </div>
+            </div>
+
+            <!-- 프로젝트 목록 -->
+            <div class="project-list-admin" id="projectListAdmin">
+                <p class="loading-text">프로젝트를 불러오는 중...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 방명록 관리 섹션 -->
+    <section id="guestbook-tab" class="admin-section" style="display: none;">
+        <div class="container">
+            <h2 class="section-title">방명록 관리</h2>
+            
+            <!-- 통계 정보 -->
+            <div class="stats-container">
+                <div class="stat-box">
+                    <div class="stat-number" id="totalGuestbooks">0</div>
+                    <div class="stat-label">전체 방명록</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="todayGuestbooks">0</div>
+                    <div class="stat-label">오늘 등록</div>
+                </div>
+            </div>
+
+            <!-- 방명록 관리 테이블 -->
+            <div class="admin-table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>번호</th>
+                            <th>이름</th>
+                            <th>메시지</th>
+                            <th>작성일</th>
+                            <th>관리</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminGuestbookList">
+                        <tr>
+                            <td colspan="5" class="empty-cell">
+                                방명록을 불러오는 중...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- 프로젝트 추가/수정 모달 -->
+    <div id="projectModal" class="modal" style="display: none;">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 id="modalTitle">프로젝트 추가</h3>
+                <button class="modal-close" onclick="closeProjectModal()">✕</button>
+            </div>
+            <form id="projectForm" class="modal-form">
+                <input type="hidden" id="projectId" name="id">
+                
+                <div class="form-group">
+                    <label for="projectTitle">프로젝트 제목 *</label>
+                    <input type="text" id="projectTitle" name="title" placeholder="프로젝트 제목을 입력하세요" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="projectDesc">프로젝트 설명 *</label>
+                    <textarea id="projectDesc" name="description" placeholder="프로젝트에 대한 설명을 입력하세요" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="projectTech">기술 스택 (쉼표로 구분) *</label>
+                    <input type="text" id="projectTech" name="techStack" placeholder="예: Java, Spring Boot, MySQL" required>
+                    <small>여러 기술을 입력할 때는 쉼표(,)로 구분해주세요</small>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="projectGithub">GitHub 주소</label>
+                        <input type="url" id="projectGithub" name="githubUrl" placeholder="https://github.com/...">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="projectDemo">Demo 주소</label>
+                        <input type="url" id="projectDemo" name="demoUrl" placeholder="https://...">
+                    </div>
+                </div>
+
+                <!-- 🆕 파일 업로드 방식으로 변경! -->
+                <div class="form-group">
+                    <label for="projectThumbnailFile">썸네일 이미지 업로드 *</label>
+                    <input type="file" id="projectThumbnailFile" name="thumbnailFile" accept="image/*" required>
+                    <small>📸 이미지 파일을 선택하세요 (JPG, PNG, GIF 등)</small>
+                </div>
+
+                <!-- 미리보기 -->
+                <div class="form-group">
+                    <label>썸네일 미리보기</label>
+                    <img id="thumbnailPreview" src="" alt="썸네일 미리보기" style="display:none; max-width:300px; max-height:200px; margin-top:10px; border:1px solid #ccc; border-radius:8px;">
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="button" class="btn btn-cancel" onclick="closeProjectModal()">취소</button>
+                    <button type="submit" class="btn btn-primary">저장</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 삭제 확인 모달 -->
+    <div id="deleteModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h3>정말 삭제하시겠습니까?</h3>
+            <p id="deleteMessage">삭제된 항목은 복구할 수 없습니다.</p>
+            <div class="modal-buttons">
+                <button class="btn btn-cancel" onclick="closeDeleteModal()">취소</button>
+                <button class="btn btn-delete" onclick="confirmDelete()">삭제</button>
+            </div>
+        </div>
+    </div>
+
+    <!--푸터-->
+    <footer>
+        <div class="container">
+            <p>&copy; Suin's Portfolio. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="/js/admin.js"></script>
+</body>
+</html>
