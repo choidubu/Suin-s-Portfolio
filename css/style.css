@@ -971,18 +971,60 @@ footer {
     }
 
 
+    .project-top {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
     .project-heading {
 
-        flex-direction: column;
+        padding: 20px 0 0;
+
+        flex-direction: row;
+
+        align-items: flex-start;
+
+        justify-content: space-between;
 
         gap: 20px;
 
     }
 
 
+    .project-heading>div {
+
+        min-width: 0;
+
+    }
+
+
     .project-heading h3 {
 
-        font-size: 38px;
+        font-size: 32px;
+
+        word-break: keep-all;
+
+    }
+
+
+    .project-heading p {
+
+        margin-top: 6px;
+
+        font-size: 15px;
+
+        word-break: keep-all;
+
+    }
+
+
+    .project-heading>span {
+
+        flex-shrink: 0;
+
+        padding-top: 4px;
 
     }
 
@@ -994,7 +1036,6 @@ footer {
         gap: 25px;
 
     }
-
 
     footer {
 
